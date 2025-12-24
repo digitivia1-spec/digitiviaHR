@@ -34,7 +34,7 @@
         
         body { background-color: var(--bg-body); color: var(--text-main); height: 100vh; display: flex; overflow: hidden; }
 
-        /* Sidebar Styles - [cite: 38] Sidebar Layout */
+        /* Sidebar Styles */
         .sidebar {
             width: 260px;
             background-color: var(--bg-sidebar);
@@ -46,7 +46,7 @@
         }
 
         .logo-area {
-            height: 64px;
+            height: 70px;
             display: flex;
             align-items: center;
             padding: 0 20px;
@@ -76,7 +76,7 @@
 
         /* Top Header */
         .top-header {
-            height: 64px;
+            height: 70px;
             background: #fff;
             border-bottom: 1px solid var(--border);
             display: flex;
@@ -85,7 +85,34 @@
             padding: 0 30px;
         }
 
-        .user-controls { display: flex; align-items: center; gap: 20px; }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+
+        /* Header Right Side Container */
+        .header-right { display: flex; align-items: center; gap: 20px; }
+
+        /* Logo Container in Top Right */
+        .branding-logos {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 1px solid var(--border);
+        }
+        html[dir="rtl"] .branding-logos {
+            margin-left: 0; padding-left: 0;
+            margin-right: 20px; padding-right: 20px;
+            border-left: none; border-right: 1px solid var(--border);
+        }
+
+        .branding-logos img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .user-controls { display: flex; align-items: center; gap: 15px; }
+        
         .icon-btn { cursor: pointer; color: var(--text-muted); font-size: 1.1rem; position: relative; }
         .badge { position: absolute; top: -5px; right: -5px; background: var(--danger); color: #fff; font-size: 0.6rem; padding: 2px 5px; border-radius: 50%; }
 
@@ -145,6 +172,8 @@
             .sidebar.active { left: 0; }
             html[dir="rtl"] .sidebar { left: auto; right: -260px; }
             html[dir="rtl"] .sidebar.active { right: 0; }
+            .top-header { padding: 0 15px; }
+            .branding-logos { display: none; } /* Hide extra logos on mobile to save space */
         }
     </style>
 </head>
@@ -162,24 +191,30 @@
     <div class="main-content">
         <header class="top-header">
             <div class="header-left">
-                <i class="fa-solid fa-bars icon-btn" onclick="toggleSidebar()" style="display:none;"></i> 
+                <i class="fa-solid fa-bars icon-btn" onclick="toggleSidebar()" style="display:none; margin-right:10px;"></i> 
                 <span id="current-date" style="font-size: 0.9rem; color: var(--text-muted);"></span>
             </div>
             
-            <div class="user-controls">
-                <select id="role-select" class="btn-outline" onchange="changeRole()">
-                    <option value="admin">HR Admin</option>
-                    <option value="employee">Employee</option>
-                </select>
+            <div class="header-right">
+                <div class="user-controls">
+                    <select id="role-select" class="btn-outline" onchange="changeRole()">
+                        <option value="admin">HR Admin</option>
+                        <option value="employee">Employee</option>
+                    </select>
 
-                <button class="btn-outline" onclick="toggleLang()" id="lang-btn">عربي</button>
-                
-                <i class="fa-regular fa-bell icon-btn"><span class="badge">3</span></i>
-                
-                <div class="dropdown">
-                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=2980b9&color=fff" alt="User" id="user-avatar">
-                    <span id="user-name">Sarah Connor</span>
-                    <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem;"></i>
+                    <button class="btn-outline" onclick="toggleLang()" id="lang-btn">عربي</button>
+                    
+                    <i class="fa-regular fa-bell icon-btn"><span class="badge">3</span></i>
+                    
+                    <div class="dropdown">
+                        <img src="https://ui-avatars.com/api/?name=Admin+User&background=2980b9&color=fff" alt="User" id="user-avatar">
+                        <span id="user-name">Sarah Connor</span>
+                    </div>
+                </div>
+
+                <div class="branding-logos">
+                    <img src="ltslogo.jpg" alt="LTS Logo">
+                    <img src="cropped-solid-logo-.jpg" alt="Digitivia Logo">
                 </div>
             </div>
         </header>
@@ -196,14 +231,14 @@
             lang: 'en'     // 'en' or 'ar'
         };
 
-        // Text Dictionary for Localization (Neutral Corporate Tone)
+        // Text Dictionary for Localization
         const i18n = {
             en: {
                 dashboard: "Dashboard",
                 payroll: "Payroll",
                 employees: "Employees",
                 attendance: "Time & Attendance",
-                zenats: "ZenATS (Recruitment)",
+                zenats: "ATS (Recruitment)", // Updated Name
                 performance: "Performance",
                 reports: "Reports",
                 whosOff: "Who's Off Today",
@@ -235,7 +270,7 @@
                 payroll: "مسير الرواتب",
                 employees: "الموظفين",
                 attendance: "الحضور والانصراف",
-                zenats: "نظام التوظيف ZenATS",
+                zenats: "نظام التوظيف (ATS)", // Updated Name
                 performance: "تقييم الأداء",
                 reports: "التقارير",
                 whosOff: "المجازين اليوم",
@@ -264,7 +299,7 @@
             }
         };
 
-        // Dummy Data [cite: 785, 778, 1309]
+        // Dummy Data
         const data = {
             whosOff: [
                 { name: "Ahmed Ali", type: "sickLeave", date: "Today", initials: "AA" },
@@ -293,10 +328,10 @@
             if (state.role === 'admin') {
                 items = [
                     { icon: 'fa-chart-pie', label: t.dashboard, active: true },
-                    { icon: 'fa-money-bill-wave', label: t.payroll }, // 
-                    { icon: 'fa-users', label: t.employees }, // [cite: 525]
-                    { icon: 'fa-clock', label: t.attendance }, // [cite: 595]
-                    { icon: 'fa-briefcase', label: t.zenats }, // 
+                    { icon: 'fa-money-bill-wave', label: t.payroll }, 
+                    { icon: 'fa-users', label: t.employees }, 
+                    { icon: 'fa-clock', label: t.attendance }, 
+                    { icon: 'fa-briefcase', label: t.zenats }, // Using updated label
                     { icon: 'fa-star', label: t.performance },
                     { icon: 'fa-file-alt', label: t.reports }
                 ];
@@ -304,8 +339,8 @@
                 items = [
                     { icon: 'fa-home', label: t.dashboard, active: true },
                     { icon: 'fa-calendar-alt', label: t.mySchedule },
-                    { icon: 'fa-file-invoice-dollar', label: t.payslip }, // [cite: 669]
-                    { icon: 'fa-plane', label: t.requestTimeOff } // [cite: 806]
+                    { icon: 'fa-file-invoice-dollar', label: t.payslip }, 
+                    { icon: 'fa-plane', label: t.requestTimeOff } 
                 ];
             }
 
@@ -326,7 +361,7 @@
             const main = document.getElementById('main-view');
             const userName = document.getElementById('user-name').innerText;
             
-            // Dynamic HTML construction based on Neutral Corporate Theme
+            // Dynamic HTML construction
             let html = `
                 <div class="page-title">
                     ${t.welcome} ${userName}
@@ -337,7 +372,7 @@
                 <div class="dashboard-grid">
             `;
 
-            // 1. Attendance Widget (Common to both but different controls) 
+            // 1. Attendance Widget (Common to both)
             html += `
                 <section class="card attendance-box">
                     <div class="card-title">${t.attendanceWidget}</div>
@@ -352,7 +387,7 @@
             if (state.role === 'admin') {
                 // ADMIN WIDGETS
                 
-                // 2. Who's Off 
+                // 2. Who's Off
                 html += `
                     <section class="card">
                         <div class="card-header">
@@ -372,7 +407,7 @@
                     </section>
                 `;
 
-                // 3. Approvals 
+                // 3. Approvals
                 html += `
                     <section class="card">
                         <div class="card-header">
@@ -392,7 +427,7 @@
                     </section>
                 `;
 
-                // 4. ZenATS / Recruitment 
+                // 4. Recruitment (ZenATS)
                 html += `
                     <section class="card">
                         <div class="card-header">
@@ -417,7 +452,7 @@
                     </section>
                 `;
                 
-                // 5. Payroll Snapshot 
+                // 5. Payroll Snapshot
                 html += `
                     <section class="card">
                         <div class="card-header">
@@ -434,9 +469,9 @@
                 `;
 
             } else {
-                // EMPLOYEE WIDGETS [cite: 668]
+                // EMPLOYEE WIDGETS
 
-                // 2. Vacation Balance [cite: 809]
+                // 2. Vacation Balance
                 html += `
                     <section class="card">
                         <div class="card-header">
@@ -450,7 +485,7 @@
                     </section>
                 `;
 
-                // 3. Last Payslip 
+                // 3. Last Payslip
                 html += `
                     <section class="card">
                         <div class="card-header">
