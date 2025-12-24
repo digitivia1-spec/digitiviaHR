@@ -44,6 +44,7 @@
             flex-direction: column;
             transition: all 0.3s;
             flex-shrink: 0;
+            height: 100vh; /* Ensure full height for scrolling */
         }
 
         .logo-area {
@@ -54,14 +55,27 @@
             font-size: 1.3rem;
             font-weight: 700;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            background: #fff; /* White bg for logo visibility */
-            color: var(--text-main);
+            background: var(--bg-sidebar); /* Changed to match sidebar color */
+            color: #fff; /* Changed to white text */
         }
         
-        .logo-area img { height: 40px; margin-right: 10px; object-fit: contain; }
+        .logo-area img { height: 40px; margin-right: 10px; object-fit: contain; background: white; padding: 2px; border-radius: 4px; } /* Added small white bg to logo for visibility on dark sidebar */
         html[dir="rtl"] .logo-area img { margin-right: 0; margin-left: 10px; }
 
-        .nav-links { list-style: none; padding: 10px 0; flex-grow: 1; overflow-y: auto; }
+        /* Navigation Container for Scrolling */
+        #nav-container {
+            flex-grow: 1;
+            overflow-y: auto; /* Enable vertical scrolling */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Scrollbar Styling for Sidebar */
+        #nav-container::-webkit-scrollbar { width: 6px; }
+        #nav-container::-webkit-scrollbar-track { background: var(--bg-sidebar); }
+        #nav-container::-webkit-scrollbar-thumb { background: #4b6cb7; border-radius: 3px; }
+
+        .nav-links { list-style: none; padding: 10px 0; }
         .nav-header { padding: 15px 20px 5px 20px; font-size: 0.75rem; text-transform: uppercase; color: #7f8c8d; font-weight: 600; letter-spacing: 1px; }
         .nav-item { padding: 12px 20px; display: flex; align-items: center; cursor: pointer; transition: 0.2s; color: #bdc3c7; font-size: 0.9rem; }
         .nav-item:hover, .nav-item.active { background-color: var(--bg-sidebar-active); color: #fff; border-left: 4px solid var(--primary-hover); }
@@ -87,6 +101,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 30px;
+            flex-shrink: 0;
         }
 
         .header-left { display: flex; align-items: center; gap: 15px; }
@@ -108,8 +123,14 @@
             border-left: none; border-right: 1px solid var(--border);
         }
 
-        .branding-logos img {
-            height: 40px;
+        .branding-logos img.secondary-logo {
+            height: 60px; /* Increased size as requested */
+            width: auto;
+            object-fit: contain;
+        }
+        
+        .branding-logos img.primary-logo {
+            height: 45px;
             width: auto;
             object-fit: contain;
         }
@@ -154,7 +175,7 @@
         .card-title { font-weight: 700; color: var(--text-main); font-size: 1rem; display: flex; align-items: center; gap: 8px; }
         .card-action { color: var(--primary); font-size: 0.85rem; cursor: pointer; text-decoration: none; }
 
-        /* Specific Widgets Styles matching image */
+        /* Specific Widgets Styles */
         
         /* Attendance Widget */
         .attendance-widget { text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; }
@@ -244,7 +265,8 @@
                 </div>
 
                 <div class="branding-logos">
-                    <img src="cropped-solid-logo-.png" alt="Digitivia Logo">
+                    <img src="ltslogo.jpg" alt="LTS Logo" class="primary-logo">
+                    <img src="cropped-solid-logo-.jpg" alt="Digitivia Logo" class="secondary-logo">
                 </div>
             </div>
         </header>
@@ -497,7 +519,8 @@
 
                 <div class="dashboard-grid-bottom">
                     
-                    <section class="card"> <div class="card-header">
+                    <section class="card"> 
+                        <div class="card-header">
                             <div class="card-title">${t.zenats}</div>
                         </div>
                         <div class="stat-row">
