@@ -44,7 +44,7 @@
             flex-direction: column;
             transition: all 0.3s;
             flex-shrink: 0;
-            height: 100vh; /* Ensure full height for scrolling */
+            height: 100vh; 
         }
 
         .logo-area {
@@ -55,22 +55,21 @@
             font-size: 1.3rem;
             font-weight: 700;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            background: var(--bg-sidebar); /* Changed to match sidebar color */
-            color: #fff; /* Changed to white text */
+            background: var(--bg-sidebar);
+            color: #fff;
         }
         
-        .logo-area img { height: 40px; margin-right: 10px; object-fit: contain; background: white; padding: 2px; border-radius: 4px; } /* Added small white bg to logo for visibility on dark sidebar */
+        .logo-area img { height: 40px; margin-right: 10px; object-fit: contain; background: white; padding: 2px; border-radius: 4px; }
         html[dir="rtl"] .logo-area img { margin-right: 0; margin-left: 10px; }
 
         /* Navigation Container for Scrolling */
         #nav-container {
             flex-grow: 1;
-            overflow-y: auto; /* Enable vertical scrolling */
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
         }
 
-        /* Scrollbar Styling for Sidebar */
         #nav-container::-webkit-scrollbar { width: 6px; }
         #nav-container::-webkit-scrollbar-track { background: var(--bg-sidebar); }
         #nav-container::-webkit-scrollbar-thumb { background: #4b6cb7; border-radius: 3px; }
@@ -105,10 +104,8 @@
         }
 
         .header-left { display: flex; align-items: center; gap: 15px; }
-
         .header-right { display: flex; align-items: center; gap: 20px; }
 
-        /* Logo Container in Top Right */
         .branding-logos {
             display: flex;
             align-items: center;
@@ -123,17 +120,8 @@
             border-left: none; border-right: 1px solid var(--border);
         }
 
-        .branding-logos img.secondary-logo {
-            height: 80px; /* Increased size as requested */
-            width: auto;
-            object-fit: contain;
-        }
-        
-        .branding-logos img.primary-logo {
-            height: 45px;
-            width: auto;
-            object-fit: contain;
-        }
+        .branding-logos img.secondary-logo { height: 80px; width: auto; object-fit: contain; }
+        .branding-logos img.primary-logo { height: 45px; width: auto; object-fit: contain; }
 
         .user-controls { display: flex; align-items: center; gap: 15px; }
         
@@ -143,82 +131,96 @@
         .dropdown { position: relative; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 500; }
         .dropdown img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
         
-        /* Dashboard Content */
+        /* Dashboard Content Scroll Area */
         .content-scroll { flex-grow: 1; overflow-y: auto; padding: 30px; }
-        .page-title { margin-bottom: 25px; font-size: 1.5rem; font-weight: 600; }
-
-        /* Widgets Grid */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 Columns for top row */
-            gap: 20px;
-        }
-        .dashboard-grid-bottom {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .grid-span-2 { grid-column: span 2; }
-
+        .page-title { margin-bottom: 25px; font-size: 1.5rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center;}
+        
+        /* --- General UI Components --- */
+        .btn-primary { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+        
         .card {
             background: #fff;
             border-radius: 8px;
             padding: 20px;
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border);
-            position: relative;
             height: 100%;
         }
-
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .card-title { font-weight: 700; color: var(--text-main); font-size: 1rem; display: flex; align-items: center; gap: 8px; }
-        .card-action { color: var(--primary); font-size: 0.85rem; cursor: pointer; text-decoration: none; }
-
-        /* Specific Widgets Styles */
+        .card-title { font-weight: 700; color: var(--text-main); font-size: 1rem; }
         
-        /* Attendance Widget */
-        .attendance-widget { text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; }
-        .clock-display { font-size: 2.2rem; font-weight: 700; color: #1abc9c; margin: 10px 0; }
-        .ip-text { font-size: 0.8rem; color: #999; margin-bottom: 15px; }
-        .btn-clock-in { background-color: #2980b9; color: white; width: 100%; padding: 10px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; }
+        /* Dashboard Grid Layouts */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-span-2 { grid-column: span 2; }
+        
+        /* --- Specific Module Styles --- */
 
-        /* Who's Off */
-        .whos-off-item { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
-        .whos-off-item:last-child { border-bottom: none; }
-        .avatar-circle { width: 35px; height: 35px; border-radius: 50%; background: #e3f2fd; color: #2980b9; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; margin-right: 12px; }
-        html[dir="rtl"] .avatar-circle { margin-right: 0; margin-left: 12px; }
-        .wo-info h4 { font-size: 0.9rem; margin: 0; font-weight: 600; }
-        .wo-info p { font-size: 0.75rem; color: #777; margin: 2px 0 0 0; }
-        .status-badge { background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-left: auto; }
-        html[dir="rtl"] .status-badge { margin-left: 0; margin-right: auto; }
+        /* Mail Agent Styles (Gmail-like) */
+        .mail-layout { display: flex; height: 100%; background: #fff; border-radius: 8px; border: 1px solid var(--border); overflow: hidden; }
+        .mail-sidebar { width: 220px; background: #f9f9f9; padding: 20px; border-right: 1px solid var(--border); }
+        html[dir="rtl"] .mail-sidebar { border-right: none; border-left: 1px solid var(--border); }
+        .mail-btn-compose { background: #fff; color: var(--danger); border: 1px solid var(--border); padding: 12px; border-radius: 24px; width: 100%; margin-bottom: 20px; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; display: flex; align-items: center; gap: 10px; justify-content: center; }
+        .mail-nav-item { padding: 10px 15px; border-radius: 0 20px 20px 0; cursor: pointer; color: #555; display: flex; justify-content: space-between; }
+        html[dir="rtl"] .mail-nav-item { border-radius: 20px 0 0 20px; }
+        .mail-nav-item.active { background: #fce8e6; color: var(--danger); font-weight: 600; }
+        .mail-list { flex-grow: 1; overflow-y: auto; }
+        .email-row { display: flex; padding: 12px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; align-items: center; gap: 15px; }
+        .email-row:hover { box-shadow: 0 1px 3px rgba(0,0,0,0.1); z-index: 1; position: relative; }
+        .email-sender { font-weight: 600; width: 180px; }
+        .email-subject { flex-grow: 1; color: #444; }
+        .email-time { color: #888; font-size: 0.8rem; }
 
-        /* Approvals */
-        .approval-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
-        .approval-actions { display: flex; gap: 5px; }
-        .btn-icon-sq { width: 30px; height: 30px; border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: white; }
-        .btn-approve { color: var(--success); border-color: var(--success); }
-        .btn-reject { color: var(--danger); border-color: var(--danger); }
+        /* WFM Charts */
+        .wfm-chart-container { display: flex; align-items: flex-end; justify-content: space-between; height: 200px; padding-top: 20px; }
+        .wfm-bar-group { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 10%; height: 100%; justify-content: flex-end; }
+        .wfm-bar { width: 100%; background: var(--primary); border-radius: 4px 4px 0 0; position: relative; transition: height 0.5s; }
+        .wfm-bar.adherence { background: var(--success); }
+        .wfm-bar.productivity { background: var(--info); }
+        .wfm-label { font-size: 0.75rem; color: #777; }
 
-        /* Stats Row */
-        .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .stat-val-green { color: var(--success); font-weight: 700; }
-        .interview-list { margin-top: 15px; border-top: 1px solid #f0f0f0; padding-top: 10px; }
-        .interview-item { font-size: 0.85rem; margin-bottom: 8px; color: #333; }
-        .interview-time { font-weight: 700; }
-        .text-muted-small { color: #888; font-size: 0.8rem; }
+        /* Post Design */
+        .post-creator { display: flex; gap: 20px; }
+        .post-input { flex: 1; display: flex; flex-direction: column; gap: 15px; }
+        .post-preview { flex: 1; background: #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 300px; position: relative; overflow: hidden; }
+        .generated-img { width: 100%; height: 100%; object-fit: cover; }
+        .ai-badge { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; }
+        textarea, input[type="text"] { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; }
+        
+        /* ATS Pipeline (Kanban-ish) */
+        .pipeline-container { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
+        .pipeline-col { min-width: 240px; background: #f8f9fa; border-radius: 6px; padding: 10px; border: 1px solid #eee; }
+        .pipeline-header { font-weight: 600; margin-bottom: 10px; display: flex; justify-content: space-between; color: #555; }
+        .candidate-card { background: #fff; padding: 12px; border-radius: 4px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border-left: 3px solid var(--primary); cursor: pointer; }
+        .candidate-card h4 { font-size: 0.9rem; margin-bottom: 4px; }
+        .candidate-card p { font-size: 0.8rem; color: #777; }
+        .tag { font-size: 0.7rem; padding: 2px 6px; background: #e3f2fd; color: var(--primary); border-radius: 4px; display: inline-block; margin-top: 5px; }
 
-        /* Payroll */
-        .compliant-badge { color: var(--success); font-weight: 600; display: flex; align-items: center; gap: 5px; }
-        .chart-placeholder { background: #f9fafb; height: 80px; margin-top: 15px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 0.8rem; border: 1px dashed #ddd; }
+        /* OKR Progress */
+        .okr-item { margin-bottom: 15px; }
+        .okr-header { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 5px; font-weight: 500; }
+        .progress-track { background: #eee; height: 8px; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--success); border-radius: 4px; }
 
-        /* Buttons */
-        .btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+        /* Social AI Cards */
+        .social-card { display: flex; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px; }
+        .social-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; }
+        .fb { background: #1877f2; } .li { background: #0077b5; } .ig { background: #e1306c; }
+        
+        /* Reception Agent Call Log */
+        .call-log-item { display: flex; justify-content: space-between; padding: 12px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 10px; background: #fff; }
+        .call-status-live { color: var(--danger); animation: pulse 1.5s infinite; font-weight: bold; font-size: 0.8rem; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .dashboard-grid, .dashboard-grid-bottom { grid-template-columns: 1fr; }
+            .grid-3 { grid-template-columns: 1fr; }
             .grid-span-2 { grid-column: span 1; }
+            .mail-layout { flex-direction: column; }
+            .mail-sidebar { width: 100%; display: flex; overflow-x: auto; }
+            .mail-btn-compose { width: auto; margin-right: 15px; }
         }
         @media (max-width: 768px) {
             .sidebar { position: absolute; left: -260px; height: 100%; z-index: 1000; }
@@ -280,10 +282,11 @@
         
         const state = {
             role: 'admin', 
-            lang: 'en'     
+            lang: 'en',
+            activeView: 'dashboard'
         };
 
-        // Translations
+        // Translations & Labels
         const i18n = {
             en: {
                 welcome: "Welcome back,",
@@ -304,24 +307,17 @@
                 wfm: "Workforce (WFM)",
                 postDesigns: "POST Designs",
                 
-                // HR Legacy
+                // HR Legacy (ZenHR PDF Data)
                 zenats: "ATS (Recruitment)",
                 payroll: "Payroll",
                 employees: "Employees",
                 attendance: "Time & Attendance",
                 performance: "Performance",
                 reports: "Reports",
-
-                // Dashboard Widgets
-                myAttendance: "My Attendance",
-                clockIn: "Clock In",
-                whosOff: "Who's Off Today",
+                
+                // Labels
+                create: "Create New",
                 viewAll: "View All",
-                pendingApprovals: "Pending Approvals",
-                activeJobs: "Active Jobs",
-                newCandidates: "New Candidates",
-                upcomingInterviews: "Upcoming Interviews",
-                wpsStatus: "WPS Status",
                 compliant: "Compliant"
             },
             ar: {
@@ -347,21 +343,14 @@
                 attendance: "الحضور والانصراف",
                 performance: "الأداء",
                 reports: "التقارير",
-
-                myAttendance: "حضوري",
-                clockIn: "تسجيل الدخول",
-                whosOff: "المجازين اليوم",
+                
+                create: "إنشاء جديد",
                 viewAll: "عرض الكل",
-                pendingApprovals: "الموافقات المعلقة",
-                activeJobs: "وظائف نشطة",
-                newCandidates: "مرشحين جدد",
-                upcomingInterviews: "المقابلات القادمة",
-                wpsStatus: "حالة حماية الأجور",
                 compliant: "متوافق"
             }
         };
 
-        // --- RENDER FUNCTIONS ---
+        // --- RENDER SIDEBAR ---
 
         function renderSidebar() {
             const t = i18n[state.lang];
@@ -373,46 +362,36 @@
             if (state.role === 'admin') {
                 sections = [
                     {
-                        title: t.sec_hr, // HR & Recruitment FIRST
+                        title: t.sec_hr, // Based on ZenHR Image
                         items: [
-                            { icon: 'fa-chart-pie', label: t.dashboard, active: true },
-                            { icon: 'fa-money-bill-wave', label: t.payroll },
-                            { icon: 'fa-users', label: t.employees },
-                            { icon: 'fa-clock', label: t.attendance },
-                            { icon: 'fa-briefcase', label: t.zenats },
-                            { icon: 'fa-star', label: t.performance },
-                            { icon: 'fa-file-alt', label: t.reports }
+                            { icon: 'fa-chart-pie', label: t.dashboard, key: 'dashboard' },
+                            { icon: 'fa-money-bill-wave', label: t.payroll, key: 'payroll' },
+                            { icon: 'fa-users', label: t.employees, key: 'employees' },
+                            { icon: 'fa-clock', label: t.attendance, key: 'attendance' },
+                            { icon: 'fa-briefcase', label: t.zenats, key: 'ats' },
+                            { icon: 'fa-star', label: t.performance, key: 'performance' },
+                            { icon: 'fa-file-alt', label: t.reports, key: 'reports' }
                         ]
                     },
                     {
                         title: t.sec_core, // AI Modules
                         items: [
-                            { icon: 'fa-share-nodes', label: t.socialAI },
-                            { icon: 'fa-robot', label: t.qaAI },
-                            { icon: 'fa-envelope-open-text', label: t.mailAgent },
-                            { icon: 'fa-headset', label: t.receptionAgent },
-                            { icon: 'fa-palette', label: t.postDesigns },
+                            { icon: 'fa-share-nodes', label: t.socialAI, key: 'socialAI' },
+                            // { icon: 'fa-robot', label: t.qaAI, key: 'qaAI' }, // Skipped as requested
+                            { icon: 'fa-envelope-open-text', label: t.mailAgent, key: 'mailAgent' },
+                            { icon: 'fa-headset', label: t.receptionAgent, key: 'receptionAgent' },
+                            { icon: 'fa-palette', label: t.postDesigns, key: 'postDesigns' },
                         ]
                     },
                     {
                         title: t.sec_ops, // Operations
                         items: [
-                            { icon: 'fa-timeline', label: t.wfm },
+                            { icon: 'fa-timeline', label: t.wfm, key: 'wfm' },
                         ]
                     }
                 ];
             } else {
-                // Agent View
-                sections = [
-                    {
-                        title: "Agent Tools",
-                        items: [
-                            { icon: 'fa-home', label: t.dashboard, active: true },
-                            { icon: 'fa-calendar', label: "My Schedule" },
-                            { icon: 'fa-envelope', label: "My Emails" }
-                        ]
-                    }
-                ];
+                sections = [ /* Agent View Simplified */ ];
             }
 
             sections.forEach(sec => {
@@ -427,11 +406,12 @@
                 
                 sec.items.forEach(item => {
                     const li = document.createElement('li');
-                    li.className = `nav-item ${item.active ? 'active' : ''}`;
+                    li.className = `nav-item ${state.activeView === item.key ? 'active' : ''}`;
                     li.innerHTML = `<i class="fa-solid ${item.icon}"></i> <span>${item.label}</span>`;
                     li.onclick = () => {
-                        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                        li.classList.add('active');
+                        state.activeView = item.key;
+                        renderSidebar(); // Re-render to update active class
+                        renderMainContent(); // Switch View
                     };
                     ul.appendChild(li);
                 });
@@ -439,143 +419,527 @@
             });
         }
 
-        function renderDashboard() {
-            const t = i18n[state.lang];
+        // --- RENDER MAIN CONTENT (ROUTER) ---
+
+        function renderMainContent() {
             const main = document.getElementById('main-view');
-            const userName = document.getElementById('user-name').innerText;
+            const t = i18n[state.lang];
             
-            let html = `
+            // Basic Container
+            let content = '';
+
+            switch(state.activeView) {
+                case 'dashboard':
+                    content = generateDashboardHTML();
+                    break;
+                case 'payroll':
+                    content = generatePayrollHTML();
+                    break;
+                case 'employees':
+                    content = generateEmployeesHTML();
+                    break;
+                case 'attendance':
+                    content = generateAttendanceHTML();
+                    break;
+                case 'ats':
+                    content = generateATSHTML();
+                    break;
+                case 'performance':
+                    content = generatePerformanceHTML();
+                    break;
+                case 'socialAI':
+                    content = generateSocialAIHTML();
+                    break;
+                case 'mailAgent':
+                    content = generateMailAgentHTML();
+                    break;
+                case 'receptionAgent':
+                    content = generateReceptionHTML();
+                    break;
+                case 'postDesigns':
+                    content = generatePostDesignsHTML();
+                    break;
+                case 'wfm':
+                    content = generateWFMHTML();
+                    break;
+                default:
+                    content = `<div class="card"><h2>${t.reports}</h2><p>Generating Analytics...</p></div>`;
+            }
+
+            main.innerHTML = content;
+        }
+
+        // --- VIEW GENERATORS ---
+
+        function generateDashboardHTML() {
+            const t = i18n[state.lang];
+            return `
                 <div class="page-title">
-                    ${t.welcome} ${userName}
-                    <div style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400; margin-top: 5px;">
-                        ${state.role === 'admin' ? t.roleAdmin : t.roleEmp} - ${new Date().toDateString()}
+                    <span>${t.welcome} <span id="dash-user">Sarah</span></span>
+                </div>
+                <div class="dashboard-grid grid-3">
+                    <div class="card">
+                        <div class="card-header"><div class="card-title"><i class="fa-solid fa-clock"></i> My Attendance</div></div>
+                        <div style="text-align:center; padding:20px;">
+                            <h2 style="color:#1abc9c; font-size:2rem; margin-bottom:10px;" id="clock-widget">00:00:00</h2>
+                            <p style="color:#777; font-size:0.8rem; margin-bottom:15px;"><i class="fa-solid fa-location-dot"></i> Amman HQ (IP: 192.168.1.1)</p>
+                            <button class="btn-primary" style="width:100%; justify-content:center;">Clock In</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Who's Off</div>
+                            <a href="#" style="font-size:0.8rem; color:var(--primary)">${t.viewAll}</a>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid #f0f0f0;">
+                            <div style="width:35px; height:35px; background:#e3f2fd; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--primary); font-weight:bold;">LI</div>
+                            <div><div style="font-weight:600; font-size:0.9rem;">Lina Inverse</div><div style="font-size:0.75rem; color:#777;">Annual Vacation</div></div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div style="width:35px; height:35px; background:#fff3e0; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--warning); font-weight:bold;">MH</div>
+                            <div><div style="font-weight:600; font-size:0.9rem;">Mark Hamill</div><div style="font-size:0.75rem; color:#777;">Sick Leave</div></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                         <div class="card-header"><div class="card-title">Pending Approvals <span class="badge" style="position:static">3</span></div></div>
+                         <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <span>Leave Request (John Doe)</span>
+                            <div>
+                                <i class="fa-solid fa-check" style="color:var(--success); margin-right:10px; cursor:pointer;"></i>
+                                <i class="fa-solid fa-xmark" style="color:var(--danger); cursor:pointer;"></i>
+                            </div>
+                         </div>
                     </div>
                 </div>
             `;
-
-            if (state.role === 'admin') {
-                html += `
-                <div class="dashboard-grid">
-                    
-                    <section class="card">
-                        <div class="attendance-widget">
-                            <div class="card-title">${t.myAttendance}</div>
-                            <div class="clock-display" id="clock">12:43:34</div>
-                            <div class="ip-text"><i class="fa-solid fa-location-dot"></i> Amman Office (IP: 192.168.1.1)</div>
-                            <button class="btn-clock-in">${t.clockIn}</button>
-                        </div>
-                    </section>
-
-                    <section class="card">
-                        <div class="card-header">
-                            <div class="card-title">${t.whosOff}</div>
-                            <a href="#" class="card-action">${t.viewAll}</a>
-                        </div>
-                        <div class="whos-off-item">
-                            <div class="avatar-circle">AA</div>
-                            <div class="wo-info">
-                                <h4>Ahmed Ali</h4>
-                                <p>Sick Leave</p>
-                            </div>
-                            <div class="status-badge" style="background:#e8f5e9; color:#2e7d32">Today</div>
-                        </div>
-                        <div class="whos-off-item">
-                            <div class="avatar-circle" style="background:#fff3e0; color:#ef6c00">LB</div>
-                            <div class="wo-info">
-                                <h4>Lina Basem</h4>
-                                <p>Remote Work</p>
-                            </div>
-                            <div class="status-badge" style="background:#e8f5e9; color:#2e7d32">Today</div>
-                        </div>
-                    </section>
-
-                    <section class="card">
-                        <div class="card-header">
-                            <div class="card-title">${t.pendingApprovals}</div>
-                            <div class="badge" style="position:static; background:var(--warning)">2</div>
-                        </div>
-                        <div class="approval-item">
-                            <div class="wo-info">
-                                <h4>John Doe</h4>
-                                <p>Leave Request</p>
-                            </div>
-                            <div class="approval-actions">
-                                <div class="btn-icon-sq btn-approve"><i class="fa-solid fa-check"></i></div>
-                                <div class="btn-icon-sq btn-reject"><i class="fa-solid fa-xmark"></i></div>
-                            </div>
-                        </div>
-                        <div class="approval-item">
-                            <div class="wo-info">
-                                <h4>Sarah Smith</h4>
-                                <p>Expense Claim</p>
-                            </div>
-                            <div class="approval-actions">
-                                <div class="btn-icon-sq btn-approve"><i class="fa-solid fa-check"></i></div>
-                                <div class="btn-icon-sq btn-reject"><i class="fa-solid fa-xmark"></i></div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-
-                <div class="dashboard-grid-bottom">
-                    
-                    <section class="card"> 
-                        <div class="card-header">
-                            <div class="card-title">${t.zenats}</div>
-                        </div>
-                        <div class="stat-row">
-                            <span class="stat-label">${t.activeJobs}</span>
-                            <span class="stat-value">4</span>
-                        </div>
-                        <div class="stat-row">
-                            <span class="stat-label">${t.newCandidates}</span>
-                            <span class="stat-val-green">+12</span>
-                        </div>
-                        
-                        <div class="interview-list">
-                            <div class="text-muted-small" style="margin-bottom:8px;">${t.upcomingInterviews}</div>
-                            <div class="interview-item">
-                                <span class="interview-time">10:00 AM</span> - Mohammad K. <span class="text-muted-small">(Senior Java Dev)</span>
-                            </div>
-                            <div class="interview-item">
-                                <span class="interview-time">02:00 PM</span> - Nour H. <span class="text-muted-small">(HR Specialist)</span>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section class="card">
-                        <div class="card-header">
-                            <div class="card-title">${t.payroll}</div>
-                        </div>
-                        <div style="margin-bottom:5px; font-size:0.9rem; color:#777;">${t.wpsStatus}</div>
-                        <div class="compliant-badge">
-                            <i class="fa-solid fa-circle-check"></i> ${t.compliant}
-                        </div>
-                        <div class="chart-placeholder">
-                            [Chart Visualization Placeholder]
-                        </div>
-                    </section>
-                    
-                    <section class="card" style="border:1px dashed #e0e0e0; display:flex; align-items:center; justify-content:center; color:#ccc;">
-                        Add Widget
-                    </section>
-
-                </div>
-                `;
-            } else {
-                html += `<div style="padding:20px; color:#666;">Agent Dashboard View Loaded...</div>`;
-            }
-
-            main.innerHTML = html;
         }
 
-        // --- ACTIONS ---
+        function generatePayrollHTML() {
+            return `
+                <div class="page-title">Payroll Management</div>
+                <div class="dashboard-grid grid-3">
+                    <div class="card">
+                        <div class="card-title">WPS & GOSI Status</div>
+                        <div style="margin-top:20px; color:var(--success); font-weight:bold; display:flex; align-items:center; gap:10px;">
+                            <i class="fa-solid fa-shield-halved" style="font-size:2rem;"></i>
+                            <div>
+                                <div>Fully Compliant</div>
+                                <div style="font-size:0.8rem; color:#777; font-weight:normal;">Saudi Arabia & Jordan Localizations active</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Quick Actions</div>
+                        <div style="margin-top:15px; display:flex; flex-direction:column; gap:10px;">
+                            <button class="btn-outline">Run Payroll (Oct 2023)</button>
+                            <button class="btn-outline">Export Bank File (WPS)</button>
+                            <button class="btn-outline">Manage Loans</button>
+                        </div>
+                    </div>
+                     <div class="card">
+                        <div class="card-title">Cost Center Distribution</div>
+                        <div style="height:100px; background:#f9f9f9; margin-top:10px; display:flex; align-items:center; justify-content:center; color:#ccc;">Chart Placeholder</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateEmployeesHTML() {
+            return `
+                 <div class="page-title">
+                    Employees
+                    <button class="btn-primary"><i class="fa-solid fa-plus"></i> Onboard New Hire</button>
+                </div>
+                <div class="dashboard-grid grid-3">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-laptop"></i> Asset Management</div>
+                        <p style="font-size:0.8rem; color:#777; margin:10px 0;">Track laptops, phones, and company property.</p>
+                        <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
+                            <span>Assigned: 142</span>
+                            <span style="color:var(--warning)">In Stock: 12</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-file-contract"></i> Document Center</div>
+                        <p style="font-size:0.8rem; color:#777; margin:10px 0;">Expiring Documents (30 days)</p>
+                        <div style="color:var(--danger); font-weight:bold;">3 Passports Expiring</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <table style="width:100%; border-collapse:collapse; font-size:0.9rem;">
+                        <tr style="text-align:left; background:#f9f9f9;">
+                            <th style="padding:10px;">Name</th>
+                            <th style="padding:10px;">Role</th>
+                            <th style="padding:10px;">Department</th>
+                            <th style="padding:10px;">Status</th>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px;">Nour Ahmad</td>
+                            <td style="padding:10px;">Product Owner</td>
+                            <td style="padding:10px;">Product</td>
+                            <td style="padding:10px;"><span style="background:#e8f5e9; color:var(--success); padding:2px 8px; border-radius:4px; font-size:0.75rem;">Active</span></td>
+                        </tr>
+                        <tr style="border-top:1px solid #eee;">
+                            <td style="padding:10px;">Masoud Khaled</td>
+                            <td style="padding:10px;">Software Engineer</td>
+                            <td style="padding:10px;">IT</td>
+                            <td style="padding:10px;"><span style="background:#e8f5e9; color:var(--success); padding:2px 8px; border-radius:4px; font-size:0.75rem;">Active</span></td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        }
+
+        function generateAttendanceHTML() {
+            return `
+                <div class="page-title">Time & Attendance</div>
+                <div class="dashboard-grid grid-3">
+                    <div class="card">
+                        <div class="card-title">Geolocation Tracking</div>
+                        <div style="margin-top:10px; font-size:0.9rem;">
+                            <div><i class="fa-solid fa-check" style="color:var(--success)"></i> Geo-fencing Active</div>
+                            <div style="margin-top:5px; font-size:0.8rem; color:#777;">Employees must be within 100m of office to clock in.</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Missing Punches</div>
+                        <div style="font-size:2rem; color:var(--warning); font-weight:bold; margin:10px 0;">5</div>
+                        <button class="btn-outline" style="width:100%">Review Requests</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Roster Planning</div>
+                        <p style="font-size:0.8rem; color:#777;">Shift A: 09:00 AM - 05:00 PM</p>
+                        <p style="font-size:0.8rem; color:#777;">Shift B: 02:00 PM - 10:00 PM</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateATSHTML() {
+            return `
+                <div class="page-title">
+                    ZenATS (Recruitment)
+                    <button class="btn-primary">Create Vacancy</button>
+                </div>
+                
+                <div class="dashboard-grid grid-3">
+                    <div class="card">
+                        <div class="card-title">Active Vacancies</div>
+                        <h2 style="margin:10px 0;">4</h2>
+                        <div style="font-size:0.8rem; color:#777;">Product Manager, Sr. QA, Java Dev</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Sources</div>
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <i class="fa-brands fa-linkedin" style="color:#0077b5; font-size:1.5rem;"></i>
+                            <i class="fa-brands fa-facebook" style="color:#1877f2; font-size:1.5rem;"></i>
+                            <span style="font-size:0.8rem; color:#777; align-self:center;">Integration Active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom:15px; font-size:1rem;">Pipeline: Senior QA Engineer</h3>
+                <div class="pipeline-container">
+                    <div class="pipeline-col">
+                        <div class="pipeline-header">Sourced (4)</div>
+                        <div class="candidate-card">
+                            <h4>Fahed Alotabi</h4>
+                            <p>Riyadh, KSA</p>
+                            <span class="tag">#QualityAssurance</span>
+                        </div>
+                         <div class="candidate-card">
+                            <h4>Abdullah Alsaud</h4>
+                            <p>Jeddah, KSA</p>
+                        </div>
+                    </div>
+                    <div class="pipeline-col">
+                        <div class="pipeline-header">Screening (2)</div>
+                         <div class="candidate-card">
+                            <h4>Aisha Mohammed</h4>
+                            <p>Amman, JO</p>
+                            <span class="tag">#ISTQB</span>
+                        </div>
+                    </div>
+                    <div class="pipeline-col">
+                        <div class="pipeline-header">Interview (1)</div>
+                         <div class="candidate-card">
+                            <h4>Raya Mohammad</h4>
+                            <p>Final Interview: 1:00 PM</p>
+                        </div>
+                    </div>
+                    <div class="pipeline-col">
+                        <div class="pipeline-header">Offer (0)</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generatePerformanceHTML() {
+            return `
+                <div class="page-title">Performance & Evaluation</div>
+                <div class="card">
+                    <div class="card-title" style="margin-bottom:20px;">Objectives & Key Results (OKRs)</div>
+                    
+                    <div class="okr-item">
+                        <div class="okr-header">
+                            <span>Objective 1: Delight our company customers</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width:60%"></div>
+                        </div>
+                        <p style="font-size:0.8rem; color:#777; margin-top:5px;">KR: Get 4+ quality rating</p>
+                    </div>
+
+                    <div class="okr-item">
+                        <div class="okr-header">
+                            <span>Objective 2: Improve Operating Excellence</span>
+                            <span>30%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width:30%; background:var(--info);"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:20px;">
+                    <div class="card-title">Competencies</div>
+                    <p style="font-size:0.9rem; color:#555; margin-top:10px;">Evaluate "How" it was done, not just "What".</p>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                         <span class="tag" style="background:#eee; color:#333;">Communication</span>
+                         <span class="tag" style="background:#eee; color:#333;">Teamwork</span>
+                         <span class="tag" style="background:#eee; color:#333;">Technical Skill</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- AI MODULES ---
+
+        function generateSocialAIHTML() {
+            return `
+                <div class="page-title">Social Media AI <span style="font-size:0.9rem; background:var(--primary); color:white; padding:2px 8px; border-radius:4px;">Live Insights</span></div>
+                
+                <div class="dashboard-grid grid-3">
+                    <div class="card">
+                        <div class="card-title">Engagement Rate</div>
+                        <h2 style="color:var(--success); margin-top:10px;">4.8% <i class="fa-solid fa-arrow-trend-up" style="font-size:1rem;"></i></h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Total Reach</div>
+                        <h2 style="color:var(--info); margin-top:10px;">12.5K</h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Sentiment Analysis</div>
+                        <div style="margin-top:10px; font-weight:bold; color:var(--success);">Positive (85%)</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title" style="margin-bottom:15px;">Recent Posts Performance</div>
+                    
+                    <div class="social-card">
+                        <div class="social-icon fb"><i class="fa-brands fa-facebook-f"></i></div>
+                        <div style="flex-grow:1;">
+                            <div style="font-weight:600;">New Product Launch</div>
+                            <div style="font-size:0.8rem; color:#777;">Posted 2 hours ago</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:bold;">1.2K Likes</div>
+                            <div style="font-size:0.8rem; color:var(--success);">High Performance</div>
+                        </div>
+                    </div>
+
+                    <div class="social-card">
+                        <div class="social-icon li"><i class="fa-brands fa-linkedin-in"></i></div>
+                        <div style="flex-grow:1;">
+                            <div style="font-weight:600;">Hiring Senior Devs</div>
+                            <div style="font-size:0.8rem; color:#777;">Posted 1 day ago</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:bold;">45 Applicants</div>
+                            <div style="font-size:0.8rem; color:#777;">Avg Performance</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateMailAgentHTML() {
+            return `
+                <div class="mail-layout">
+                    <div class="mail-sidebar">
+                        <div style="width:100%">
+                            <button class="mail-btn-compose"><i class="fa-solid fa-pen"></i> Compose</button>
+                            <div class="mail-nav-item active"><i class="fa-solid fa-inbox"></i> Inbox <span style="font-size:0.8rem;">12</span></div>
+                            <div class="mail-nav-item"><i class="fa-regular fa-paper-plane"></i> Sent</div>
+                            <div class="mail-nav-item"><i class="fa-regular fa-file"></i> Drafts</div>
+                            <div class="mail-nav-item"><i class="fa-solid fa-robot"></i> AI Drafts <span class="badge" style="position:static; background:var(--primary)">New</span></div>
+                        </div>
+                    </div>
+                    <div class="mail-list">
+                        <div style="padding:15px; border-bottom:1px solid #e0e0e0; font-weight:600; color:#555;">Primary</div>
+                        
+                        <div class="email-row">
+                            <div class="email-sender">Justin Mason</div>
+                            <div class="email-subject"><strong>Tax Documents 2020</strong> - Please find attached the summary...</div>
+                            <div class="email-time">10:30 AM</div>
+                        </div>
+                        <div class="email-row" style="background:#f9f9f9;">
+                            <div class="email-sender">ZenHR Support</div>
+                            <div class="email-subject">System Maintenance Scheduled for Friday</div>
+                            <div class="email-time">Yesterday</div>
+                        </div>
+                        <div class="email-row">
+                            <div class="email-sender">Mohammad Ahmad</div>
+                            <div class="email-subject"><strong>Re: Product Owner Vacancy</strong> - I have attached my updated CV...</div>
+                            <div class="email-time">Oct 20</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateReceptionHTML() {
+            return `
+                <div class="page-title">
+                    Reception Agent AI
+                    <button class="btn-primary" style="background:var(--success)"><i class="fa-solid fa-phone"></i> Create Call</button>
+                </div>
+                
+                <div class="dashboard-grid grid-3">
+                    <div class="card">
+                        <div class="card-title">Live Calls</div>
+                        <h2 style="color:var(--danger); margin-top:10px;">2 <span style="font-size:0.8rem; font-weight:normal;">Active</span></h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Calls Today</div>
+                        <h2 style="color:#333; margin-top:10px;">48</h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">AI Resolution Rate</div>
+                        <h2 style="color:var(--info); margin-top:10px;">82%</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title" style="margin-bottom:15px;">Call Log Insights</div>
+                    
+                    <div class="call-log-item">
+                        <div>
+                            <div style="font-weight:600;">+962 79 000 0000</div>
+                            <div style="font-size:0.8rem; color:#777;">Inbound - Pricing Inquiry</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div class="call-status-live">● Live Now</div>
+                            <div style="font-size:0.8rem;">Agent: AI Assistant</div>
+                        </div>
+                    </div>
+
+                    <div class="call-log-item">
+                        <div>
+                            <div style="font-weight:600;">+966 54 123 4567</div>
+                            <div style="font-size:0.8rem; color:#777;">Inbound - HR Support</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="color:var(--success); font-size:0.8rem; font-weight:600;">Resolved</div>
+                            <div style="font-size:0.8rem;">Duration: 2m 14s</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generatePostDesignsHTML() {
+            return `
+                 <div class="page-title">AI Post Designer</div>
+                 <div class="card">
+                    <div class="post-creator">
+                        <div class="post-input">
+                            <div class="card-title">Create New Post</div>
+                            <div>
+                                <label style="font-size:0.9rem; font-weight:600;">Post Topic / Caption Idea</label>
+                                <textarea rows="4" placeholder="e.g. A professional LinkedIn post about our new partnership with ZenHR..."></textarea>
+                            </div>
+                            <div>
+                                <label style="font-size:0.9rem; font-weight:600;">Image Style</label>
+                                <select class="btn-outline" style="width:100%; margin-top:5px;">
+                                    <option>Professional/Corporate</option>
+                                    <option>Modern/Minimalist</option>
+                                    <option>Vibrant/Creative</option>
+                                </select>
+                            </div>
+                            <button class="btn-primary" style="justify-content:center; margin-top:10px;"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Design</button>
+                        </div>
+                        <div class="post-preview">
+                            <span style="color:#999;">AI Generated Preview will appear here</span>
+                            <div class="ai-badge"><i class="fa-solid fa-robot"></i> AI Generated</div>
+                        </div>
+                    </div>
+                 </div>
+                 
+                 <div class="dashboard-grid grid-3" style="margin-top:20px;">
+                    <div class="card" style="padding:10px;">
+                        <div style="height:150px; background:#e0e0e0; border-radius:4px; margin-bottom:10px;"></div>
+                        <div style="font-weight:600; font-size:0.9rem;">Hiring Alert Post</div>
+                        <div style="font-size:0.8rem; color:var(--primary); cursor:pointer;">View Insights</div>
+                    </div>
+                    <div class="card" style="padding:10px;">
+                        <div style="height:150px; background:#e0e0e0; border-radius:4px; margin-bottom:10px;"></div>
+                        <div style="font-weight:600; font-size:0.9rem;">Eid Greeting</div>
+                         <div style="font-size:0.8rem; color:var(--primary); cursor:pointer;">View Insights</div>
+                    </div>
+                 </div>
+            `;
+        }
+
+        function generateWFMHTML() {
+            return `
+                <div class="page-title">Workforce Management (WFM)</div>
+                <div class="dashboard-grid grid-3">
+                    <div class="card">
+                        <div class="card-title">Schedule Adherence</div>
+                        <h2 style="color:var(--success); margin-top:10px;">94%</h2>
+                        <div style="font-size:0.8rem; color:#777;">Team is sticking to schedule</div>
+                    </div>
+                     <div class="card">
+                        <div class="card-title">Productivity Score</div>
+                        <h2 style="color:var(--info); margin-top:10px;">8.5/10</h2>
+                    </div>
+                     <div class="card">
+                        <div class="card-title">Forecast Accuracy</div>
+                        <h2 style="color:var(--warning); margin-top:10px;">+/- 5%</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Intraday Adherence & Productivity</div>
+                        <div style="font-size:0.8rem;">
+                            <span style="color:var(--success)">■ Adherence</span> 
+                            <span style="color:var(--info)">■ Productivity</span>
+                        </div>
+                    </div>
+                    <div class="wfm-chart-container">
+                        <div class="wfm-bar-group"><div class="wfm-bar adherence" style="height:80%"></div><div class="wfm-bar productivity" style="height:70%"></div><span class="wfm-label">8am</span></div>
+                        <div class="wfm-bar-group"><div class="wfm-bar adherence" style="height:90%"></div><div class="wfm-bar productivity" style="height:85%"></div><span class="wfm-label">9am</span></div>
+                        <div class="wfm-bar-group"><div class="wfm-bar adherence" style="height:95%"></div><div class="wfm-bar productivity" style="height:90%"></div><span class="wfm-label">10am</span></div>
+                        <div class="wfm-bar-group"><div class="wfm-bar adherence" style="height:85%"></div><div class="wfm-bar productivity" style="height:80%"></div><span class="wfm-label">11am</span></div>
+                        <div class="wfm-bar-group"><div class="wfm-bar adherence" style="height:60%"></div><div class="wfm-bar productivity" style="height:40%"></div><span class="wfm-label">12pm</span></div>
+                        <div class="wfm-bar-group"><div class="wfm-bar adherence" style="height:90%"></div><div class="wfm-bar productivity" style="height:75%"></div><span class="wfm-label">1pm</span></div>
+                        <div class="wfm-bar-group"><div class="wfm-bar adherence" style="height:92%"></div><div class="wfm-bar productivity" style="height:88%"></div><span class="wfm-label">2pm</span></div>
+                        <div class="wfm-bar-group"><div class="wfm-bar adherence" style="height:88%"></div><div class="wfm-bar productivity" style="height:82%"></div><span class="wfm-label">3pm</span></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- ACTIONS & HELPERS ---
 
         function changeRole() {
             const select = document.getElementById('role-select');
             state.role = select.value;
             renderSidebar();
-            renderDashboard();
+            renderMainContent();
         }
 
         function toggleLang() {
@@ -596,7 +960,7 @@
             }
             
             renderSidebar();
-            renderDashboard();
+            renderMainContent();
         }
 
         function toggleSidebar() {
@@ -607,14 +971,14 @@
         setInterval(() => {
             const now = new Date();
             const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            const clockEl = document.getElementById('clock');
+            const clockEl = document.getElementById('clock-widget');
             if(clockEl) clockEl.innerText = timeString;
         }, 1000);
 
         // Init
         document.getElementById('current-date').innerText = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         renderSidebar();
-        renderDashboard();
+        renderMainContent();
 
     </script>
 </body>
