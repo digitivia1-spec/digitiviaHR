@@ -183,11 +183,39 @@
         .wfm-label { font-size: 0.75rem; color: #777; }
 
         /* Post Design */
-        .post-creator { display: flex; gap: 20px; }
+        .post-creator { display: flex; gap: 20px; height: 100%; }
         .post-input { flex: 1; display: flex; flex-direction: column; gap: 15px; }
-        .post-preview { flex: 1; background: #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 300px; position: relative; overflow: hidden; }
-        .generated-img { width: 100%; height: 100%; object-fit: contain; }
-        .ai-badge { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; }
+        .post-preview { 
+            flex: 1; 
+            background: #eee; 
+            border-radius: 8px; 
+            display: flex; 
+            flex-direction: column; /* Changed to column to stack image and text */
+            align-items: center; 
+            justify-content: flex-start; /* Align to top */
+            min-height: 400px; 
+            position: relative; 
+            overflow-y: auto; /* Allow scrolling if caption is long */
+            padding: 10px;
+        }
+        .generated-img { width: 100%; height: auto; max-height: 300px; object-fit: contain; border-radius: 4px; border: 1px solid #ddd; }
+        
+        /* Styles for the generated caption box */
+        .caption-box {
+            width: 100%;
+            background: white;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #444;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+
+        .ai-badge { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; z-index: 10; }
         textarea, input[type="text"] { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; }
         
         /* ATS Pipeline (Kanban-ish) */
@@ -877,7 +905,9 @@
                             </button>
                         </div>
                         <div class="post-preview" id="post-preview-area">
-                            <span style="color:#999;">AI Generated Preview will appear here</span>
+                            <div style="text-align:center; margin-top: auto; margin-bottom: auto;">
+                                <span style="color:#999;">AI Generated Preview will appear here</span>
+                            </div>
                         </div>
                     </div>
                  </div>
@@ -916,7 +946,7 @@
             generateBtn.disabled = true;
             generateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
             previewArea.innerHTML = `
-                <div style="text-align:center; color:var(--primary);">
+                <div style="text-align:center; color:var(--primary); margin-top: auto; margin-bottom: auto;">
                     <i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem; margin-bottom:10px;"></i>
                     <p>AI is designing your content...</p>
                 </div>
@@ -941,26 +971,43 @@
 
                 const data = await response.json();
 
-                // 3. Handle Response (Expecting { "image_url": "..." })
-                const imageUrl = data.image_url || data.output || data.image; // Tries multiple common key names
+                // 3. Handle Response (Expecting "image_url" AND "generated_caption")
+                const imageUrl = data.image_url || data.output || data.image; 
+                const captionText = data.generated_caption || data.caption || "No caption generated.";
 
+                let contentHtml = '';
+
+                // Build Image Section
                 if (imageUrl) {
-                    previewArea.innerHTML = `
-                        <img src="${imageUrl}" class="generated-img" alt="AI Generated Content">
-                        <div class="ai-badge"><i class="fa-solid fa-robot"></i> AI Generated</div>
-                        <div style="position:absolute; bottom:10px; right:10px;">
-                            <a href="${imageUrl}" target="_blank" class="btn-primary" style="padding:4px 8px; font-size:0.7rem;">Download</a>
+                    contentHtml += `
+                        <div style="position:relative; width:100%; text-align:center;">
+                            <img src="${imageUrl}" class="generated-img" alt="AI Generated Content">
+                            <div class="ai-badge"><i class="fa-solid fa-robot"></i> AI Image</div>
                         </div>
                     `;
-                } else {
-                    previewArea.innerHTML = `<p style="color:var(--danger)">Image generated, but no URL returned.</p>`;
-                    console.log("Full Response:", data);
                 }
+
+                // Build Caption Section
+                if (captionText) {
+                    contentHtml += `
+                        <div class="caption-box">
+                            <div style="font-weight:600; margin-bottom:5px; color:var(--primary);">
+                                <i class="fa-solid fa-pen-nib"></i> Suggested Caption:
+                            </div>
+                            <p>${captionText.replace(/\n/g, '<br>')}</p>
+                        </div>
+                        <div style="width:100%; text-align:right; margin-top:10px;">
+                             <a href="${imageUrl}" target="_blank" class="btn-primary" style="padding:4px 8px; font-size:0.7rem;">Download Asset</a>
+                        </div>
+                    `;
+                }
+
+                previewArea.innerHTML = contentHtml;
 
             } catch (error) {
                 console.error('Error:', error);
                 previewArea.innerHTML = `
-                    <div style="text-align:center; color:var(--danger);">
+                    <div style="text-align:center; color:var(--danger); margin-top: auto; margin-bottom: auto;">
                         <i class="fa-solid fa-triangle-exclamation" style="font-size:2rem; margin-bottom:10px;"></i>
                         <p>Failed to generate content.</p>
                         <p style="font-size:0.7rem;">Check console for details.</p>
