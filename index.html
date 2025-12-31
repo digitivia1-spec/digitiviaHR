@@ -125,7 +125,8 @@
 
         .user-controls { display: flex; align-items: center; gap: 15px; }
         
-        .icon-btn { cursor: pointer; color: var(--text-muted); font-size: 1.1rem; position: relative; }
+        .icon-btn { cursor: pointer; color: var(--text-muted); font-size: 1.1rem; position: relative; transition: color 0.2s; }
+        .icon-btn:hover { color: var(--primary); }
         .badge { position: absolute; top: -5px; right: -5px; background: var(--danger); color: #fff; font-size: 0.6rem; padding: 2px 5px; border-radius: 50%; }
 
         .dropdown { position: relative; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 500; }
@@ -302,15 +303,17 @@
 
         /* Toast Notification */
         .toast {
-            position: fixed; bottom: 30px; right: 30px;
+            position: fixed; top: 85px; right: 30px; /* Moved top-right to avoid FAB overlap */
             background: #27ae60;
             color: white; padding: 15px 25px; border-radius: 6px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             display: flex; align-items: center; gap: 10px;
-            transform: translateY(100px); transition: transform 0.3s ease;
-            z-index: 9999;
+            transform: translateY(-20px); opacity: 0; pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 10001;
         }
-        .toast.show { transform: translateY(0); }
+        .toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        html[dir="rtl"] .toast { right: auto; left: 30px; }
 
         /* --- Specific Module Styles --- */
 
@@ -407,33 +410,80 @@
         
         textarea, input[type="text"] { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; }
         
-        /* QA Analysis Section Styles */
-        .qa-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; height: 100%; }
+        /* QA Analysis Section Styles (AuraSpeak Style) */
+        .qa-grid { display: grid; grid-template-columns: 2fr 3fr; gap: 20px; height: 100%; }
         .qa-input-area { display: flex; flex-direction: column; gap: 15px; }
         .qa-result-area { 
             background: #fff; border-left: 1px solid var(--border); padding: 20px; 
-            display: flex; flex-direction: column; gap: 20px;
+            display: flex; flex-direction: column; gap: 20px; overflow-y: auto;
         }
-        .score-circle {
-            width: 120px; height: 120px; border-radius: 50%; 
-            background: conic-gradient(var(--primary) 0%, #eee 0);
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto; position: relative;
-        }
-        .score-inner { 
-            width: 90px; height: 90px; background: #fff; border-radius: 50%; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .score-value { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
-        .score-label { font-size: 0.7rem; color: #777; text-transform: uppercase; }
-
-        .metric-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-        .metric-val { font-weight: 600; }
         
-        .suggestion-list { list-style: none; margin-top: 10px; }
-        .suggestion-item { 
-            display: flex; gap: 10px; margin-bottom: 10px; font-size: 0.85rem; color: #555; 
-            background: #fff9fa; padding: 8px; border-radius: 4px; border-left: 3px solid var(--warning);
+        /* AuraSpeak Results Grid */
+        .qa-report-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+        .qa-col-span-2 { grid-column: span 2; }
+        
+        .qa-metric-card { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 8px; 
+            border: 1px solid #eee; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column;
+            transition: all 0.2s;
+        }
+        .qa-metric-card:hover { border-color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        .qa-metric-title { 
+            font-size: 0.75rem; font-weight: 700; color: var(--primary); 
+            margin-bottom: 10px; display: flex; align-items: center; gap: 8px; 
+            text-transform: uppercase; letter-spacing: 0.5px; 
+        }
+        
+        .qa-sentiment-big { font-size: 3rem; font-weight: 800; color: var(--text-main); text-align: center; margin: auto; }
+        
+        .qa-list-clean { list-style: none; padding: 0; font-size: 0.85rem; color: #555; flex-grow: 1; }
+        .qa-list-clean li { margin-bottom: 8px; padding-left: 15px; position: relative; line-height: 1.4; }
+        .qa-list-clean li::before { content: '•'; position: absolute; left: 0; color: var(--primary); font-weight: bold; }
+        
+        .qa-tag { display: inline-block; padding: 4px 10px; border-radius: 15px; font-size: 0.75rem; margin: 2px; background: #e3f2fd; color: var(--primary); border: 1px solid #bbdefb; font-weight: 600; }
+        
+        .achievement-item { 
+            background: #fff; border: 1px solid #eee; padding: 10px; border-radius: 6px; 
+            margin-bottom: 8px; display: flex; gap: 10px; align-items: flex-start; 
+            border-left: 3px solid var(--warning); 
+        }
+        .achievement-icon { color: var(--warning); font-size: 1.2rem; margin-top: 2px; }
+        .achievement-content h4 { font-size: 0.85rem; margin-bottom: 2px; font-weight: 700; }
+        .achievement-content p { font-size: 0.75rem; color: #777; margin: 0; line-height: 1.3; }
+
+        .coaching-box {
+            background: linear-gradient(135deg, #2c3e50, #34495e); color: white;
+            padding: 15px; border-radius: 8px; font-size: 0.9rem; font-style: italic; line-height: 1.5;
+            position: relative;
+        }
+        .coaching-box i { position: absolute; top: -10px; left: 20px; font-size: 1.5rem; color: var(--primary-hover); background: #2c3e50; padding: 0 5px; }
+
+        /* QA Demo Tabs Styles */
+        .demo-nav-primary { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 15px; gap: 5px; }
+        .demo-tab-btn { padding: 10px 20px; cursor: pointer; font-weight: 500; font-size: 0.9rem; color: var(--text-muted); border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .demo-tab-btn:hover { color: var(--primary); background: #f8f9fa; }
+        .demo-tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; background: #f0f7ff; }
+
+        .demo-nav-secondary { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .demo-sub-btn { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; border: 1px solid var(--border); color: var(--text-muted); background: white; transition: all 0.2s; }
+        .demo-sub-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .demo-sub-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .demo-content-area { background: #f8f9fa; border: 1px solid #eee; border-radius: 8px; padding: 25px; min-height: 200px; }
+        .demo-placeholder-widget { background: #e9ecef; border: 2px dashed #ced4da; border-radius: 6px; height: 120px; display: flex; align-items: center; justify-content: center; color: #6c757d; font-weight: 500; margin-top: 15px; }
+        .demo-disclaimer { margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; font-size: 0.75rem; color: #999; text-align: center; font-style: italic; }
+
+        /* Mobile Responsive QA */
+        @media (max-width: 1024px) {
+            .qa-grid { grid-template-columns: 1fr; }
+            .qa-report-grid { grid-template-columns: 1fr; }
+            .qa-col-span-2 { grid-column: span 1; }
         }
 
         /* ATS Pipeline */
@@ -461,6 +511,94 @@
         .call-status-live { color: var(--danger); animation: pulse 1.5s infinite; font-weight: bold; font-size: 0.8rem; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
+        /* === NEW STYLES: MODAL & CHAT === */
+        
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 10000;
+            display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(2px);
+        }
+        .modal-overlay.open { display: flex; opacity: 1; }
+        .modal-content {
+            background: #fff; width: 90%; max-width: 700px; max-height: 85vh;
+            overflow-y: auto; border-radius: 12px; padding: 30px;
+            position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .modal-close {
+            position: absolute; top: 20px; right: 25px; font-size: 1.5rem;
+            cursor: pointer; color: #999; transition: color 0.2s;
+        }
+        html[dir="rtl"] .modal-close { right: auto; left: 25px; }
+        .modal-close:hover { color: var(--danger); }
+        
+        .help-section { margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .help-section:last-child { border-bottom: none; }
+        .help-title { font-weight: 700; font-size: 1.1rem; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .help-text { font-size: 0.9rem; line-height: 1.6; color: #555; }
+        .help-list { margin-top: 10px; padding-left: 20px; font-size: 0.9rem; color: #555; }
+        html[dir="rtl"] .help-list { padding-left: 0; padding-right: 20px; }
+        .help-list li { margin-bottom: 6px; }
+
+        /* Support FAB */
+        .fab-support {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 60px; height: 60px;
+            background: var(--primary); color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.4);
+            z-index: 9990; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .fab-support:hover { transform: scale(1.1); background: var(--primary-hover); }
+        html[dir="rtl"] .fab-support { right: auto; left: 30px; }
+
+        /* Support Chat Widget */
+        .chat-widget {
+            position: fixed; bottom: 100px; right: 30px;
+            width: 350px; height: 500px;
+            background: #fff; border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+            z-index: 9991; display: none; flex-direction: column; overflow: hidden;
+            border: 1px solid var(--border);
+            animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        html[dir="rtl"] .chat-widget { right: auto; left: 30px; }
+        .chat-widget.open { display: flex; }
+
+        .chat-header {
+            background: var(--primary); color: white; padding: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: 600;
+        }
+        .chat-close-mini { cursor: pointer; opacity: 0.8; transition: 0.2s; }
+        .chat-close-mini:hover { opacity: 1; }
+
+        .chat-body { flex-grow: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+        
+        .chat-msg { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 0.9rem; line-height: 1.4; position: relative; word-wrap: break-word; }
+        .chat-msg.bot { background: #fff; border: 1px solid #e0e0e0; align-self: flex-start; border-bottom-left-radius: 2px; color: #444; }
+        .chat-msg.user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        html[dir="rtl"] .chat-msg.bot { border-bottom-left-radius: 12px; border-bottom-right-radius: 2px; }
+        html[dir="rtl"] .chat-msg.user { border-bottom-right-radius: 12px; border-bottom-left-radius: 2px; }
+
+        .chat-footer { padding: 10px; background: #fff; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .chat-input { border: 1px solid #ddd; padding: 8px 12px; border-radius: 20px; flex-grow: 1; font-size: 0.9rem; outline: none; }
+        .chat-send { width: 35px; height: 35px; background: var(--primary); color: white; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .chat-send:hover { background: var(--primary-hover); transform: scale(1.05); }
+
+        .quick-replies { display: flex; gap: 5px; padding: 0 15px 10px 15px; overflow-x: auto; background: #f9f9f9; }
+        .quick-reply-chip { white-space: nowrap; font-size: 0.75rem; background: #eef2f7; color: var(--primary); padding: 5px 10px; border-radius: 15px; border: 1px solid #dce4ec; cursor: pointer; transition: 0.2s; }
+        .quick-reply-chip:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .quick-replies::-webkit-scrollbar { height: 4px; }
+        .quick-replies::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .grid-3 { grid-template-columns: 1fr; }
@@ -469,7 +607,6 @@
             .mail-sidebar { width: 100%; display: flex; overflow-x: auto; }
             .mail-btn-compose { width: auto; margin-right: 15px; }
             .avatar-grid { grid-template-columns: repeat(2, 1fr); }
-            .qa-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 768px) {
             .sidebar { position: absolute; left: -260px; height: 100%; z-index: 1000; }
@@ -480,6 +617,7 @@
             .post-creator { flex-direction: column; }
             .avatar-grid { grid-template-columns: 1fr; }
             .config-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .chat-widget { width: 90%; right: 5%; left: 5%; bottom: 100px; height: 60vh; }
         }
     </style>
 </head>
@@ -512,6 +650,10 @@
                     
                     <i class="fa-regular fa-bell icon-btn"><span class="badge">2</span></i>
                     
+                    <i class="fa-solid fa-circle-question icon-btn" onclick="openHelpModal()" title="Help & Guide"></i>
+                    
+                    <i class="fa-solid fa-right-from-bracket icon-btn" onclick="logout()" title="Logout" style="color:var(--danger)"></i>
+
                     <div class="dropdown">
                         <img src="https://ui-avatars.com/api/?name=Sarah+Connor&background=2980b9&color=fff" alt="User" id="user-avatar">
                         <span id="user-name">Sarah Connor</span>
@@ -528,7 +670,36 @@
         <main class="content-scroll" id="main-view">
             </main>
             
-        <div id="toast" class="toast"><i class="fa-solid fa-circle-check"></i> <span>Configuration Saved!</span></div>
+        <div id="toast" class="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg">Configuration Saved!</span></div>
+    </div>
+
+    <div id="help-modal" class="modal-overlay" onclick="if(event.target === this) closeHelpModal()">
+        <div class="modal-content">
+            <i class="fa-solid fa-xmark modal-close" onclick="closeHelpModal()"></i>
+            <h2 style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px;" id="help-modal-title">How to use this App</h2>
+            <div id="help-modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div class="fab-support" onclick="toggleSupportChat()">
+        <i class="fa-solid fa-headset"></i>
+    </div>
+
+    <div class="chat-widget" id="chat-widget">
+        <div class="chat-header">
+            <span><i class="fa-solid fa-robot"></i> AI Assistant</span>
+            <i class="fa-solid fa-minus chat-close-mini" onclick="toggleSupportChat()"></i>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="chat-msg bot">Hello! I'm your LTS AI assistant. How can I help you today?</div>
+        </div>
+        <div class="quick-replies" id="quick-replies">
+            </div>
+        <div class="chat-footer">
+            <input type="text" class="chat-input" id="chat-input" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendSupportMessage()">
+            <button class="chat-send" onclick="sendSupportMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
     </div>
 
     <script>
@@ -540,7 +711,24 @@
             activeView: 'dashboard',
             selectedAvatar: 'Ali', // Default selection
             socialPreviewMode: 'facebook', // 'facebook' or 'linkedin'
-            lastGeneratedContent: null // Store generated content to re-render previews
+            lastGeneratedContent: null, // Store generated content to re-render previews
+            chatHistory: [], // Local session chat
+            // QA Demo State
+            qaDemoPrimaryTab: 'resultsDashboard',
+            qaDemoManualSubTab: 'text',
+            qaDemoDashboardTab: 'summary'
+        };
+
+        const defaults = {
+            role: 'admin',
+            lang: 'en',
+            activeView: 'dashboard',
+            selectedAvatar: 'Ali',
+            socialPreviewMode: 'facebook',
+            lastGeneratedContent: null,
+            qaDemoPrimaryTab: 'resultsDashboard',
+            qaDemoManualSubTab: 'text',
+            qaDemoDashboardTab: 'summary'
         };
 
         // Translations & Labels
@@ -558,7 +746,7 @@
                 // Modules
                 dashboard: "Dashboard",
                 socialAI: "Social Media AI",
-                qaAI: "QA Analysis", // NEW
+                qaAI: "QA Analysis", 
                 mailAgent: "Mail Agent",
                 receptionAgent: "Reception Agent",
                 digitalWorkforce: "Digital Workforce",
@@ -576,7 +764,17 @@
                 // Labels
                 create: "Create New",
                 viewAll: "View All",
-                compliant: "Compliant"
+                compliant: "Compliant",
+                
+                // New Strings
+                helpTitle: "LTS Ops User Guide",
+                logoutConfirm: "Are you sure you want to log out and reset the application?",
+                loggedOut: "Logged out successfully",
+                chatPlaceholder: "Type your question...",
+                chatIntro: "Hello! I'm your LTS AI assistant. How can I help you today?",
+                quick_nav: "Navigate?",
+                quick_role: "Change Role?",
+                quick_qa: "QA Help"
             },
             ar: {
                 welcome: "مرحباً بعودتك،",
@@ -589,7 +787,7 @@
 
                 dashboard: "لوحة التحكم",
                 socialAI: "تحليل التواصل الاجتماعي",
-                qaAI: "تحليل الجودة (QA)", // NEW
+                qaAI: "تحليل الجودة (QA)", 
                 mailAgent: "عميل البريد الإلكتروني",
                 receptionAgent: "موظف الاستقبال الآلي",
                 digitalWorkforce: "القوى العاملة الرقمية",
@@ -605,9 +803,188 @@
                 
                 create: "إنشاء جديد",
                 viewAll: "عرض الكل",
-                compliant: "متوافق"
+                compliant: "متوافق",
+
+                helpTitle: "دليل استخدام النظام",
+                logoutConfirm: "هل أنت متأكد أنك تريد تسجيل الخروج وإعادة تعيين التطبيق؟",
+                loggedOut: "تم تسجيل الخروج بنجاح",
+                chatPlaceholder: "اكتب سؤالك هنا...",
+                chatIntro: "مرحباً! أنا مساعد الذكاء الاصطناعي. كيف يمكنني مساعدتك اليوم؟",
+                quick_nav: "كيف اتنقل؟",
+                quick_role: "تغيير الدور؟",
+                quick_qa: "مساعدة الجودة"
             }
         };
+
+        // --- NEW FEATURES LOGIC ---
+
+        // 1. Logout Logic
+        function logout() {
+            const t = i18n[state.lang];
+            if(confirm(t.logoutConfirm)) {
+                // Reset State
+                Object.assign(state, defaults);
+                state.chatHistory = []; // clear chat
+                
+                // Reset DOM Attributes
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.documentElement.setAttribute('lang', 'en');
+                document.body.style.fontFamily = "'Inter', sans-serif";
+                
+                // Reset UI Elements
+                document.getElementById('lang-btn').innerText = "عربي";
+                document.getElementById('role-select').value = 'admin';
+                document.getElementById('chat-body').innerHTML = `<div class="chat-msg bot">${i18n.en.chatIntro}</div>`;
+                document.getElementById('chat-widget').classList.remove('open');
+
+                // Re-render
+                renderSidebar();
+                renderMainContent();
+                
+                // Toast
+                showToast(t.loggedOut, 'success');
+            }
+        }
+
+        // 2. Help Modal Logic
+        function openHelpModal() {
+            const t = i18n[state.lang];
+            const isAr = state.lang === 'ar';
+            document.getElementById('help-modal-title').innerText = t.helpTitle;
+            
+            const content = isAr ? `
+                <div class="help-section">
+                    <div class="help-title"><i class="fa-solid fa-rocket"></i> البداية</div>
+                    <div class="help-text">مرحباً بك في نظام LTS Ops. هذا العرض التجريبي يوضح قدرات الذكاء الاصطناعي في إدارة العمليات والموارد البشرية.</div>
+                </div>
+                <div class="help-section">
+                    <div class="help-title"><i class="fa-solid fa-bars"></i> التنقل والقائمة</div>
+                    <div class="help-text">استخدم القائمة الجانبية للتنقل بين الوحدات. تتغير القائمة بناءً على الدور (مدير أو موظف).</div>
+                </div>
+                <div class="help-section">
+                    <div class="help-title"><i class="fa-solid fa-user-gear"></i> الأدوار</div>
+                    <div class="help-text">يمكنك التبديل بين "مدير" (صلاحيات كاملة) و "موظف" (عرض محدود) من القائمة العلوية.</div>
+                </div>
+                <div class="help-section">
+                    <div class="help-title"><i class="fa-solid fa-layer-group"></i> الوحدات الرئيسية</div>
+                    <ul class="help-list">
+                        <li><strong>القوى العاملة الرقمية:</strong> إدارة وتخصيص وكلاء الذكاء الاصطناعي (الشخصية، اللهجة).</li>
+                        <li><strong>تحليل الجودة (QA):</strong> لصق نصوص البريد الإلكتروني للحصول على تحليل فوري للمشاعر والمخاطر.</li>
+                        <li><strong>إنشاء المحتوى:</strong> توليد صور ومنشورات للتواصل الاجتماعي بضغطة زر.</li>
+                        <li><strong>WFM:</strong> مراقبة الالتزام بالجدول الزمني والإنتاجية.</li>
+                    </ul>
+                </div>
+            ` : `
+                <div class="help-section">
+                    <div class="help-title"><i class="fa-solid fa-rocket"></i> Getting Started</div>
+                    <div class="help-text">Welcome to LTS Ops. This high-fidelity demo showcases AI capabilities in Operations and HR management.</div>
+                </div>
+                <div class="help-section">
+                    <div class="help-title"><i class="fa-solid fa-bars"></i> Navigation</div>
+                    <div class="help-text">Use the sidebar to navigate between modules. The menu items change based on your selected Role (Admin vs Agent).</div>
+                </div>
+                <div class="help-section">
+                    <div class="help-title"><i class="fa-solid fa-user-gear"></i> Roles</div>
+                    <div class="help-text">Toggle between "Admin" (Full access) and "Agent" (Limited view) using the dropdown in the top header.</div>
+                </div>
+                <div class="help-section">
+                    <div class="help-title"><i class="fa-solid fa-layer-group"></i> Key Modules</div>
+                    <ul class="help-list">
+                        <li><strong>Digital Workforce:</strong> Configure AI agents, set dialects, and personality traits.</li>
+                        <li><strong>QA Analysis:</strong> Paste email text to get sentiment analysis, risk detection, and coaching tips.</li>
+                        <li><strong>Content Gen:</strong> Generate social media posts and images instantly.</li>
+                        <li><strong>WFM:</strong> Monitor schedule adherence and productivity scores.</li>
+                    </ul>
+                </div>
+            `;
+            
+            document.getElementById('help-modal-body').innerHTML = content;
+            document.getElementById('help-modal').classList.add('open');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('help-modal').classList.remove('open');
+        }
+
+        // 3. Support Chat Logic
+        function toggleSupportChat() {
+            const widget = document.getElementById('chat-widget');
+            widget.classList.toggle('open');
+            // Update quick replies on open
+            renderQuickReplies();
+        }
+
+        function renderQuickReplies() {
+            const t = i18n[state.lang];
+            const container = document.getElementById('quick-replies');
+            container.innerHTML = `
+                <div class="quick-reply-chip" onclick="insertChat('${t.quick_nav}')">${t.quick_nav}</div>
+                <div class="quick-reply-chip" onclick="insertChat('${t.quick_role}')">${t.quick_role}</div>
+                <div class="quick-reply-chip" onclick="insertChat('${t.quick_qa}')">${t.quick_qa}</div>
+            `;
+        }
+
+        function insertChat(text) {
+            const input = document.getElementById('chat-input');
+            input.value = text;
+            sendSupportMessage();
+        }
+
+        function appendMessage(text, sender) {
+            const body = document.getElementById('chat-body');
+            const div = document.createElement('div');
+            div.className = `chat-msg ${sender}`;
+            div.innerText = text;
+            body.appendChild(div);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function sendSupportMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if(!text) return;
+            
+            appendMessage(text, 'user');
+            input.value = '';
+            
+            // Simple Local Bot Logic
+            setTimeout(() => {
+                const lower = text.toLowerCase();
+                let reply = "";
+                const isAr = state.lang === 'ar';
+
+                if(lower.includes("hello") || lower.includes("hi") || lower.includes("مرحبا")) {
+                    reply = isAr ? "أهلاً بك! كيف يمكنني مساعدتك؟" : "Hello! How can I assist you with the LTS Ops platform?";
+                } else if(lower.includes("navigat") || lower.includes("تنقل")) {
+                    reply = isAr ? "استخدم القائمة الجانبية للوصول للوحدات المختلفة." : "Use the sidebar on the left to navigate between AI, Ops, and HR modules.";
+                } else if(lower.includes("role") || lower.includes("دور")) {
+                    reply = isAr ? "يمكنك تغيير الدور من القائمة العلوية بجانب زر اللغة." : "You can switch roles using the dropdown in the top header next to the language button.";
+                } else if(lower.includes("qa") || lower.includes("quality")) {
+                    reply = isAr ? "وحدة الجودة تقوم بتحليل النصوص واكتشاف المخاطر تلقائياً." : "The QA Analysis module allows you to paste email/chat text and get instant sentiment and risk reports.";
+                } else if(lower.includes("human") || lower.includes("support") || lower.includes("بشري")) {
+                    reply = isAr ? "يرجى التواصل مع support@example.com للمساعدة البشرية." : "For human support, please email support@example.com.";
+                } else if(lower.includes("reset") || lower.includes("logout") || lower.includes("خروج")) {
+                    reply = isAr ? "استخدم زر الخروج في الأعلى لإعادة تعيين التطبيق." : "Use the Logout button (right arrow icon) in the header to reset the application state.";
+                } else {
+                    reply = isAr ? "عذراً، لم أفهم تماماً. هل يمكنك إعادة الصياغة؟" : "I'm not sure I understand. Can you try asking about 'Roles', 'Navigation', or 'Modules'?";
+                }
+                appendMessage(reply, 'bot');
+            }, 600);
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            msgEl.innerText = message;
+            
+            // Optional styling based on type
+            toast.style.background = type === 'error' ? '#c0392b' : '#27ae60';
+            
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
 
         // --- RENDER SIDEBAR ---
 
@@ -651,7 +1028,16 @@
                     }
                 ];
             } else {
-                sections = [ /* Agent View Simplified */ ];
+                sections = [ /* Agent View Simplified */ 
+                    {
+                        title: t.sec_ops,
+                        items: [
+                            { icon: 'fa-chart-pie', label: t.dashboard, key: 'dashboard' },
+                            { icon: 'fa-clock', label: t.attendance, key: 'attendance' },
+                            { icon: 'fa-envelope-open-text', label: t.mailAgent, key: 'mailAgent' },
+                        ]
+                    }
+                ];
             }
 
             sections.forEach(sec => {
@@ -738,14 +1124,241 @@
             if (state.activeView === 'postDesigns' && state.lastGeneratedContent) {
                 renderSocialPreview(state.lastGeneratedContent);
             }
+            
+            // Re-bind chat input text
+            const chatInput = document.getElementById('chat-input');
+            if(chatInput) chatInput.placeholder = t.chatPlaceholder;
         }
 
-        // --- NEW: QA ANALYSIS MODULE ---
+        // --- NEW: QA ANALYSIS MODULE (AuraSpeak Style) ---
+        
+        // 1. Helper Functions
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function resetQaForm() {
+            document.getElementById('qa-subject').value = ''; 
+            document.getElementById('qa-body').value = '';
+            document.getElementById('qa-result-container').innerHTML = `
+                <div style="text-align:center; color:var(--text-muted); margin-top:50px;">
+                    <i class="fa-solid fa-chart-simple" style="font-size:3rem; margin-bottom:15px; color:#e0e0e0;"></i>
+                    <p>Enter email details and click Analyze to see analytics.</p>
+                </div>
+            `;
+        }
+
+        function normalizeQaResponse(data) {
+            // Converts old response format to AuraSpeak format if needed
+            const normalized = {
+                conversation_sentiment_pct: data.conversation_sentiment_pct || data.overall_score || 0,
+                key_action_items: data.key_action_items || data.suggestions || [],
+                potential_risks_critical_flags: data.potential_risks_critical_flags || [],
+                positive_highlights: data.positive_highlights || [],
+                conversation_flow: data.conversation_flow || "Analysis of flow not available.",
+                main_topics: data.main_topics || (data.tone ? [data.tone] : []),
+                unlocked_achievements: data.unlocked_achievements || [],
+                coaching_workout: data.coaching_workout || "Great job! Keep monitoring your tone."
+            };
+
+            // Heuristic for old format
+            if (!data.potential_risks_critical_flags && data.spam_likelihood === "High") {
+                normalized.potential_risks_critical_flags.push("High Spam Likelihood detected");
+            }
+
+            return normalized;
+        }
+
+        // --- NEW: QA DEMO TAB LOGIC ---
+        function setQaDemoPrimaryTab(tab) {
+            state.qaDemoPrimaryTab = tab;
+            renderMainContent(); // Re-render to update view
+        }
+
+        function setQaDemoManualSubTab(tab) {
+            state.qaDemoManualSubTab = tab;
+            renderMainContent();
+        }
+
+        function setQaDemoDashboardTab(tab) {
+            state.qaDemoDashboardTab = tab;
+            renderMainContent();
+        }
+
+        function generateQaDemoContent() {
+            const pTab = state.qaDemoPrimaryTab;
+            
+            // 1. Manual Analysis View
+            if(pTab === 'manualAnalysis') {
+                const sTab = state.qaDemoManualSubTab;
+                return `
+                    <div style="text-align:center; padding:30px; color:var(--text-muted);">
+                        <i class="fa-solid ${sTab === 'file' ? 'fa-file-arrow-up' : sTab === 'mic' ? 'fa-microphone' : sTab === 'url' ? 'fa-link' : sTab === 'import' ? 'fa-cloud-arrow-up' : 'fa-font'}" style="font-size:3rem; margin-bottom:15px; color:#e0e0e0;"></i>
+                        <h3>Manual Analysis - ${sTab.charAt(0).toUpperCase() + sTab.slice(1)} Mode</h3>
+                        <p style="margin-top:10px;">Upload or input data here to start a manual analysis session.</p>
+                        <div class="demo-placeholder-widget">Input Widget Placeholder</div>
+                    </div>
+                `;
+            }
+            // 2. Role Play View
+            else if (pTab === 'rolePlay') {
+                return `
+                    <div style="text-align:center; padding:30px; color:var(--text-muted);">
+                        <i class="fa-solid fa-masks-theater" style="font-size:3rem; margin-bottom:15px; color:#e0e0e0;"></i>
+                        <h3>Role Play Simulation</h3>
+                        <p style="margin-top:10px;">Practice scenarios with AI agents in a safe environment.</p>
+                        <div class="demo-placeholder-widget">Simulation Widget Placeholder</div>
+                    </div>
+                `;
+            }
+            // 3. Results Dashboard View
+            else {
+                const dTab = state.qaDemoDashboardTab;
+                let desc = "";
+                let icon = "fa-chart-pie";
+                
+                switch(dTab) {
+                    case 'conversationMap': desc = "Shows speaker turns and dominance timeline."; icon="fa-map"; break;
+                    case 'summary': desc = "Topics / Action items / Risks summary."; icon="fa-list-check"; break;
+                    case 'achievementsDisplay': desc = "Badges and milestones unlocked in this session."; icon="fa-trophy"; break;
+                    case 'coachingWorkout': desc = "Personalized coaching tips based on performance."; icon="fa-dumbbell"; break;
+                    case 'emotionalTimeline': desc = "Sentiment analysis over time."; icon="fa-wave-square"; break;
+                    case 'meetingIntelligence': desc = "Advanced metrics on meeting effectiveness."; icon="fa-brain"; break;
+                    case 'complianceReport': desc = "Regulatory and script compliance checks."; icon="fa-shield-halved"; break;
+                    case 'transcript': desc = "Full text transcript of the interaction."; icon="fa-file-lines"; break;
+                    case 'sentencesAnalysisTable': desc = "Detailed breakdown of sentence structures."; icon="fa-table"; break;
+                    case 'overallToneChart': desc = "Aggregate tone analysis."; icon="fa-chart-pie"; break;
+                    case 'flagFrequencyChart': desc = "Frequency of flagged keywords/topics."; icon="fa-flag"; break;
+                    case 'toneEvolutionChart': desc = "How tone shifted throughout the conversation."; icon="fa-chart-line"; break;
+                    case 'emotionalArcChart': desc = "Visual arc of emotional intensity."; icon="fa-chart-area"; break;
+                    case 'downloadButtons': desc = "Export reports in PDF, PPT, CSV."; icon="fa-download"; break;
+                }
+
+                if (dTab === 'transcript') {
+                    return `
+                        <h3><i class="fa-solid ${icon}"></i> ${dTab.replace(/([A-Z])/g, ' $1').trim()}</h3>
+                        <p style="color:var(--text-muted); margin-bottom:15px;">${desc}</p>
+                        <div style="background:#fff; border:1px solid #eee; padding:15px; height:150px; overflow-y:auto; font-family:monospace; font-size:0.85rem; color:#555;">
+                            [00:00:01] Agent: Hello, thank you for calling LTS Ops support.<br>
+                            [00:00:05] Customer: Hi, I have an issue with my payroll access.<br>
+                            [00:00:10] Agent: I understand, let me check that for you immediately.<br>
+                            [00:00:15] Customer: It says 'Access Denied' when I login.<br>
+                            [00:00:20] Agent: Okay, I see the flag on your account. Clearing it now.<br>
+                            [00:00:25] Customer: Thank you, it works now.<br>
+                            [00:00:30] Agent: You're welcome! Is there anything else?
+                        </div>
+                    `;
+                }
+                
+                if (dTab === 'downloadButtons') {
+                     return `
+                        <h3><i class="fa-solid ${icon}"></i> Downloads</h3>
+                        <p style="color:var(--text-muted); margin-bottom:15px;">${desc}</p>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn-outline"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
+                            <button class="btn-outline"><i class="fa-solid fa-file-powerpoint"></i> Download PPT</button>
+                            <button class="btn-outline"><i class="fa-solid fa-file-csv"></i> Download CSV</button>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <h3><i class="fa-solid ${icon}"></i> ${dTab.charAt(0).toUpperCase() + dTab.slice(1).replace(/([A-Z])/g, ' $1').trim()}</h3>
+                    <p style="color:var(--text-muted); margin-bottom:15px;">${desc}</p>
+                    <div class="demo-placeholder-widget">${desc} Widget</div>
+                `;
+            }
+        }
+
+        function generateQaDemoHTML() {
+            // Helper to generate tabs
+            const pTab = state.qaDemoPrimaryTab;
+            const primaryTabs = [
+                { id: 'manualAnalysis', label: 'Manual Analysis' },
+                { id: 'rolePlay', label: 'Role Play' },
+                { id: 'resultsDashboard', label: 'Results Dashboard' }
+            ];
+            
+            const manualSubTabs = [
+                { id: 'file', label: 'File' },
+                { id: 'mic', label: 'Mic' },
+                { id: 'url', label: 'URL' },
+                { id: 'text', label: 'Text' },
+                { id: 'import', label: 'Import' }
+            ];
+
+            // Order preserved strictly as requested
+            const dashboardTabs = [
+                { id: 'conversationMap', label: 'Conversation Map' },
+                { id: 'summary', label: 'Summary' },
+                { id: 'achievementsDisplay', label: 'Achievements' },
+                { id: 'coachingWorkout', label: 'Coaching Workout' },
+                { id: 'emotionalTimeline', label: 'Emotional Timeline' },
+                { id: 'meetingIntelligence', label: 'Meeting Intelligence' },
+                { id: 'complianceReport', label: 'Compliance Report' },
+                { id: 'transcript', label: 'Transcript' },
+                { id: 'sentencesAnalysisTable', label: 'Sentence Analysis Table' },
+                { id: 'overallToneChart', label: 'Overall Tone Chart' },
+                { id: 'flagFrequencyChart', label: 'Flag Frequency Chart' },
+                { id: 'toneEvolutionChart', label: 'Tone Evolution Chart' },
+                { id: 'emotionalArcChart', label: 'Emotional Arc Chart' },
+                { id: 'downloadButtons', label: 'Downloads' }
+            ];
+
+            // Build HTML
+            let navHtml = `<div class="demo-nav-primary">`;
+            primaryTabs.forEach(t => {
+                navHtml += `<div class="demo-tab-btn ${pTab === t.id ? 'active' : ''}" onclick="setQaDemoPrimaryTab('${t.id}')">${t.label}</div>`;
+            });
+            navHtml += `</div>`;
+
+            let subNavHtml = '';
+            if (pTab === 'manualAnalysis') {
+                subNavHtml = `<div class="demo-nav-secondary">`;
+                manualSubTabs.forEach(t => {
+                    subNavHtml += `<div class="demo-sub-btn ${state.qaDemoManualSubTab === t.id ? 'active' : ''}" onclick="setQaDemoManualSubTab('${t.id}')">${t.label}</div>`;
+                });
+                subNavHtml += `</div>`;
+            } else if (pTab === 'resultsDashboard') {
+                subNavHtml = `<div class="demo-nav-secondary">`;
+                dashboardTabs.forEach(t => {
+                    subNavHtml += `<div class="demo-sub-btn ${state.qaDemoDashboardTab === t.id ? 'active' : ''}" onclick="setQaDemoDashboardTab('${t.id}')">${t.label}</div>`;
+                });
+                subNavHtml += `</div>`;
+            }
+
+            return `
+                <div class="card" style="margin-top:20px;">
+                    <div class="card-header">
+                        <div class="card-title">QA Manual analysis</div>
+                    </div>
+                    
+                    ${navHtml}
+                    ${subNavHtml}
+                    
+                    <div class="demo-content-area">
+                        ${generateQaDemoContent()}
+                    </div>
+                    
+                    <div class="demo-disclaimer">
+                        AI-generated analysis. Flagged content is based on pattern recognition and should be reviewed by a human. Not a legal determination.
+                    </div>
+                </div>
+            `;
+        }
+
+        // 2. Main Generation Function
         function generateQaAIHTML() {
             return `
                 <div class="page-title">
                     QA Analysis (Email Quality)
-                    <button class="btn-outline" onclick="document.getElementById('qa-subject').value=''; document.getElementById('qa-body').value='';"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                    <button class="btn-outline" onclick="resetQaForm()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
                 </div>
                 
                 <div class="card qa-grid">
@@ -766,13 +1379,110 @@
                     <div class="qa-result-area" id="qa-result-container">
                         <div style="text-align:center; color:var(--text-muted); margin-top:50px;">
                             <i class="fa-solid fa-chart-simple" style="font-size:3rem; margin-bottom:15px; color:#e0e0e0;"></i>
-                            <p>Enter email details and click Analyze to see quality metrics.</p>
+                            <p>Enter email details and click Analyze to see analytics.</p>
+                        </div>
+                    </div>
+                </div>
+
+                ${generateQaDemoHTML()}
+            `;
+        }
+
+        // 3. Renderer Function
+        function renderQaResultHTML(data, subject) {
+            const container = document.getElementById('qa-result-container');
+            const safeSubject = escapeHtml(subject || 'Pasted Text');
+            
+            // Generate List Items Helper
+            const renderList = (items, emptyMsg) => {
+                if (!items || items.length === 0) return `<li>${emptyMsg}</li>`;
+                return items.map(item => `<li>${escapeHtml(item)}</li>`).join('');
+            };
+
+            // Generate Achievements Helper
+            const renderAchievements = (achievements) => {
+                if (!achievements || achievements.length === 0) return '<p style="color:#777; font-size:0.8rem;">No achievements unlocked this time.</p>';
+                return achievements.map(ach => `
+                    <div class="achievement-item">
+                        <i class="fa-solid fa-trophy achievement-icon"></i>
+                        <div class="achievement-content">
+                            <h4>${escapeHtml(ach.title)}</h4>
+                            <p>${escapeHtml(ach.description)}</p>
+                        </div>
+                    </div>
+                `).join('');
+            };
+
+            const sentimentColor = data.conversation_sentiment_pct > 80 ? 'var(--success)' : (data.conversation_sentiment_pct > 50 ? 'var(--warning)' : 'var(--danger)');
+
+            const html = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">
+                    <h3 style="color:var(--primary); font-size:1.1rem; margin:0;">Analysis Report for: <span style="color:var(--text-main)">${safeSubject}</span></h3>
+                    <div>
+                        <button class="btn-outline" style="font-size:0.75rem;"><i class="fa-solid fa-sliders"></i> Customize</button>
+                    </div>
+                </div>
+
+                <div class="qa-report-grid">
+                    <div class="qa-metric-card" style="background:#2c3e50; color:white; border:none;">
+                        <div class="qa-metric-title" style="color:#ecf0f1; justify-content:center;">OVERALL SENTIMENT</div>
+                        <div class="qa-sentiment-big" style="color:white;">${data.conversation_sentiment_pct}%</div>
+                    </div>
+
+                    <div class="qa-metric-card">
+                        <div class="qa-metric-title"><i class="fa-solid fa-check-circle"></i> Key Action Items</div>
+                        <ul class="qa-list-clean">
+                            ${renderList(data.key_action_items, 'No specific action items identified.')}
+                        </ul>
+                    </div>
+
+                    <div class="qa-metric-card">
+                        <div class="qa-metric-title" style="color:var(--danger)"><i class="fa-solid fa-triangle-exclamation"></i> Potential Risks</div>
+                        <ul class="qa-list-clean">
+                            ${renderList(data.potential_risks_critical_flags, 'No major risks detected.')}
+                        </ul>
+                    </div>
+
+                    <div class="qa-metric-card">
+                        <div class="qa-metric-title" style="color:var(--success)"><i class="fa-solid fa-star"></i> Highlights</div>
+                        <ul class="qa-list-clean">
+                            ${renderList(data.positive_highlights, 'No specific highlights.')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="qa-report-grid">
+                    <div class="qa-metric-card qa-col-span-2">
+                        <div class="qa-metric-title"><i class="fa-solid fa-wave-square"></i> Conversation Flow</div>
+                        <p style="font-size:0.85rem; color:#555; line-height:1.5;">"${escapeHtml(data.conversation_flow)}"</p>
+                    </div>
+                    <div class="qa-metric-card qa-col-span-2">
+                        <div class="qa-metric-title"><i class="fa-solid fa-tags"></i> Main Topics</div>
+                        <div>
+                            ${data.main_topics.map(t => `<span class="qa-tag">${escapeHtml(t)}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-report-grid">
+                    <div class="qa-metric-card qa-col-span-2">
+                        <div class="qa-metric-title"><i class="fa-solid fa-medal"></i> Unlocked Achievements</div>
+                        ${renderAchievements(data.unlocked_achievements)}
+                    </div>
+                    <div class="qa-metric-card qa-col-span-2">
+                        <div class="qa-metric-title"><i class="fa-solid fa-dumbbell"></i> Coaching Workout</div>
+                        <div class="coaching-box">
+                            <i class="fa-solid fa-quote-left"></i>
+                            ${escapeHtml(data.coaching_workout)}
                         </div>
                     </div>
                 </div>
             `;
+
+            container.innerHTML = html;
         }
 
+        // 4. Trigger Function
         async function triggerQaAnalysis() {
             const subject = document.getElementById('qa-subject').value;
             const body = document.getElementById('qa-body').value;
@@ -784,19 +1494,18 @@
                 return;
             }
 
-            // 1. Loading UI
+            // Loading UI
             btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analyzing...';
             container.innerHTML = `
                 <div style="text-align:center; margin-top:50px;">
                     <i class="fa-solid fa-robot fa-bounce" style="font-size:2rem; color:var(--primary); margin-bottom:15px;"></i>
-                    <p>Sending data to AI...</p>
+                    <p>AI is generating Report...</p>
                 </div>
             `;
 
             try {
-                // 2. REAL WEBHOOK REQUEST
-                // PASTE YOUR NEW WEBHOOK URL HERE vvv
+                // REAL WEBHOOK REQUEST
                 const webhookUrl = "https://n8n.srv1174105.hstgr.cloud/webhook/qaanalysis"; 
 
                 const response = await fetch(webhookUrl, {
@@ -814,43 +1523,11 @@
                     throw new Error(`Server Error: ${response.status}`);
                 }
 
-                const data = await response.json();
+                const rawData = await response.json();
+                const normalizedData = normalizeQaResponse(rawData);
 
-                // 3. Render Results based on REAL data
-                // Note: Ensure your webhook returns keys: overall_score, tone, spam_likelihood, suggestions (array)
-                
-                const scoreColor = data.overall_score > 80 ? 'var(--success)' : (data.overall_score > 50 ? 'var(--warning)' : 'var(--danger)');
-                
-                container.innerHTML = `
-                    <div style="text-align:center; margin-bottom:20px;">
-                        <div class="score-circle" style="background: conic-gradient(${scoreColor} ${data.overall_score}%, #eee 0);">
-                            <div class="score-inner">
-                                <div class="score-value" style="color:${scoreColor}">${data.overall_score}</div>
-                                <div class="score-label">Quality Score</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="metric-row">
-                            <span style="color:#777">Detected Tone</span>
-                            <span class="metric-val" style="color:var(--primary)"><i class="fa-solid fa-tag"></i> ${data.tone}</span>
-                        </div>
-                        <div class="metric-row">
-                            <span style="color:#777">Spam Likelihood</span>
-                            <span class="metric-val" style="color:${data.spam_likelihood === 'Low' ? 'var(--success)' : 'var(--danger)'}">
-                                <i class="fa-solid fa-shield-halved"></i> ${data.spam_likelihood}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div style="font-weight:600; font-size:0.9rem; margin-bottom:10px;">AI Suggestions</div>
-                        <ul class="suggestion-list">
-                            ${data.suggestions ? data.suggestions.map(s => `<li class="suggestion-item"><i class="fa-solid fa-lightbulb" style="color:var(--warning)"></i> ${s}</li>`).join('') : '<li>No suggestions returned.</li>'}
-                        </ul>
-                    </div>
-                `;
+                // Render Results
+                renderQaResultHTML(normalizedData, subject);
 
             } catch (error) {
                 console.error(error);
@@ -859,7 +1536,6 @@
                         <i class="fa-solid fa-triangle-exclamation" style="font-size:2rem; margin-bottom:10px;"></i>
                         <p>Connection Failed</p>
                         <p style="font-size:0.8rem; color:#777;">${error.message}</p>
-                        <p style="font-size:0.7rem; color:#777;">Check Console (F12) for CORS errors.</p>
                     </div>
                 `;
             } finally {
@@ -867,6 +1543,7 @@
                 btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-chart"></i> Analyze Quality';
             }
         }
+
         // --- MODIFIED: CONTENT GEN MODULE (With Toggle) ---
 
         function generatePostDesignsHTML() {
@@ -1606,11 +2283,7 @@
         }
 
         function saveConfig() {
-            const toast = document.getElementById('toast');
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            showToast("Configuration Saved!", "success");
         }
 
         function changeRole() {
@@ -1639,6 +2312,11 @@
             
             renderSidebar();
             renderMainContent();
+            
+            // Re-render Chat Intro if chat is empty
+            if(state.chatHistory.length === 0) {
+                 document.getElementById('chat-body').innerHTML = `<div class="chat-msg bot">${i18n[state.lang].chatIntro}</div>`;
+            }
         }
 
         function toggleSidebar() {
